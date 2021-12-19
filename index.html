@@ -262,7 +262,7 @@
         </fieldset>
 
         <button type="submit">
-          Create Section
+          Update Section
         </button>
       </form>
 
@@ -308,12 +308,30 @@
           </div>
         </template>
       </div>
+
+      <textarea
+        x-text="JSON.stringify(data, null, 2)"
+        rows="20"
+        cols="100"
+        
+      ></textarea>
+
+      <button
+        type="button"
+        @click="copyToClipboard"
+      >
+        Copy to Clipboard
+      </button>
     </section>
   </main>
 
   <script>
     document.addEventListener('alpine:init', () => {
       Alpine.data('schema', () => ({
+        init() {
+          this.createSection()
+        },
+
         details: {
           name: 'Shopify Section',
           tag: 'div',
@@ -373,6 +391,8 @@
         // },
 
         target: '',
+
+        data: '',
 
         addSetting() {
           let target = this.target
@@ -457,7 +477,14 @@
             blocks: this.blocks,
           };
 
-          console.log(data);
+          this.data = data
+        },
+
+        copyToClipboard() {
+          let textarea = document.getElementById('textarea')
+
+          textarea.select()
+          document.execCommand('copy')
         },
 
         shouldShow(input) {
