@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "serve",
-    "css": "npx tailwindcss -o index.css --watch --minify"
+    "css": "npx tailwindcss -i tailwind.css -o build.css --watch --minify"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.4.0",

@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+label {
+  @apply block mb-1 text-sm font-medium;
+}
+
+select,
+textarea,
+input[type='text'],
+input[type='number'] {
+  @apply w-full text-sm border-gray-200 rounded;
+}
+
+input[type='checkbox'] {
+  @apply w-4 h-4 border-gray-200 rounded;
+}
+
+button {
+  @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded;
+}
+
+button span[role='img'] {
+  @apply ml-1.5;
+}
