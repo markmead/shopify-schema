@@ -313,7 +313,7 @@
         x-text="JSON.stringify(data, null, 2)"
         rows="20"
         cols="100"
-        
+
       ></textarea>
 
       <button
@@ -336,7 +336,7 @@
           name: 'Shopify Section',
           tag: 'div',
           class: 'shopify-section',
-          max_blocks: 5,
+          max_blocks: '',
         },
 
         settings: [],
@@ -348,14 +348,12 @@
           default: '',
           placeholder: '',
           info: '',
-
           options: [],
+          accept: [],
           min: '',
           max: '',
           step: '',
           unit: '',
-
-          accept: [],
         },
 
         option: {
@@ -369,7 +367,7 @@
         block: {
           name: '',
           type: '',
-          limit: 5,
+          limit: '',
           settings: [],
         },
 
@@ -397,12 +395,20 @@
         addSetting() {
           let target = this.target
 
+          let setting = Object.assign({}, this.setting)
+
+          Object.keys(setting).forEach(key => {
+            if (setting[key].length === 0) {
+              delete setting[key]
+            }
+          })
+
           if (target) {
             let block = this.blocks.find(block => block.name === target)
 
-            block.settings.push(this.setting)
+            block.settings.push(setting)
           } else {
-            this.settings.push(this.setting)
+            this.settings.push(setting)
           }
 
           this.setting = {
@@ -412,14 +418,12 @@
             default: '',
             placeholder: '',
             info: '',
-
             options: [],
+            accept: [],
             min: '',
             max: '',
             step: '',
             unit: '',
-
-            accept: [],
           }
         },
 
@@ -451,9 +455,15 @@
           let types = this.blocks.map(block => block.type);
           let type = this.block.type;
 
+          let block = Object.assign({}, this.block)
+
+          Object.keys(block).forEach(key => {
+            block[key].length === 0 && delete block[key]
+          })
+
           if (types.includes(type)) return
 
-          this.blocks.push(this.block);
+          this.blocks.push(block);
 
           this.block = {
             name: '',
@@ -475,7 +485,11 @@
             max_blocks: this.details.max_blocks,
             settings: this.settings,
             blocks: this.blocks,
-          };
+          }
+
+          Object.keys(data).forEach(key => {
+            !data[key] && delete data[key]
+          })
 
           this.data = data
         },
