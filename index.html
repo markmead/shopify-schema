@@ -27,7 +27,7 @@
 <body>
   <main
     role="main"
-    class="grid place-content-center h-screen"
+    class="grid h-screen place-content-center"
   >
     <section
       x-data="schema"
@@ -45,7 +45,7 @@
               </legend>
             </div>
 
-            <div class="col-span-2 grid grid-cols-6 gap-4">
+            <div class="grid grid-cols-6 col-span-2 gap-4">
               <div class="col-span-3">
                 <label for="details_name">Name</label>
                 <input type="text" id="details_name" x-model="details.name">
@@ -82,7 +82,7 @@
               </legend>
             </div>
 
-            <div class="col-span-2 grid grid-cols-6 gap-4">
+            <div class="grid grid-cols-6 col-span-2 gap-4">
               <template x-if="shouldShow('id')">
                 <div class="col-span-3">
                   <label for="setting_id">ID</label>
@@ -230,7 +230,7 @@
                     Options
                   </p>
 
-                  <div class="mt-4 grid grid-cols-6 gap-4">
+                  <div class="grid grid-cols-6 gap-4 mt-4">
                     <div class="col-span-3">
                       <label for="option_value">Value</label>
                       <input type="text" id="option_value" x-model="option.value">
@@ -252,7 +252,7 @@
                   <button
                     type="button"
                     @click="addOption"
-                    class="px-4 py-2 rounded bg-gray-100 text-sm mt-4"
+                    class="px-4 py-2 mt-4 text-sm bg-gray-100 rounded"
                   >
                     Add Option
                   </button>
@@ -276,7 +276,7 @@
                 <button
                   type="button"
                   @click="addSetting"
-                  class="px-4 py-2 rounded bg-gray-100 text-sm mt-4"
+                  class="px-4 py-2 text-sm bg-gray-100 rounded"
                 >
                   Add Setting
                 </button>
@@ -291,7 +291,7 @@
               </legend>
             </div>
 
-            <div class="col-span-2 grid grid-cols-6 gap-4">
+            <div class="grid grid-cols-6 col-span-2 gap-4">
               <div class="col-span-3">
                 <label for="block_name">Name</label>
                 <input type="text" id="block_name" x-model="block.name">
@@ -302,7 +302,7 @@
                 <input type="text" id="block_type" x-model="block.type">
               </div>
 
-              <div class="cols-span-3">
+              <div class="col-span-3">
                 <label for="block_limit">Limit</label>
                 <input type="number" id="block_limit" x-model="block.limit">
               </div>
@@ -311,7 +311,7 @@
                 <button
                   type="button"
                   @click="addBlock"
-                  class="px-4 py-2 rounded bg-gray-100 text-sm"
+                  class="px-4 py-2 text-sm bg-gray-100 rounded"
                 >
                   Add Block
                 </button>
@@ -319,26 +319,85 @@
             </div>
           </fieldset>
 
-          <button
-            type="submit"
-            class="px-4 py-2 rounded bg-green-100 text-sm"
-          >
-            Update Section
-          </button>
+          <div class="flex justify-end space-x-4">
+            <button
+              type="submit"
+              class="px-4 py-2 text-sm bg-green-100 rounded"
+            >
+              Update Section
+            </button>
+
+            <button
+              type="button"
+              @click="copyToClipboard"
+              class="px-4 py-2 text-sm bg-gray-100 rounded"
+            >
+              Copy to Clipboard
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-8">
+            <div>
+              <p>
+                Blocks
+              </p>
+
+              <ul class="pl-4">
+                <template x-for="(block, index) in blocks">
+                  <li>
+                    <span x-text="block.name"></span>
+
+                    <ul>
+                      <template x-for="(setting, index) in block.settings">
+                        <li>
+                          <span x-text="setting.label"></span>
+                        </li>
+                      </template>
+                    </ul>
+                  </li>
+                </template>
+              </ul>
+            </div>
+
+            <div>
+              <p>
+                Settings
+              </p>
+
+              <ul>
+                <template x-for="(setting, index) in settings">
+                  <li>
+                    <span x-text="setting.label"></span>
+
+                    <label :for="`target_${setting.id}`"></label>
+                    <select
+                      :id="`target_${setting.id}`"
+                      @change="moveSetting(index, $event.target.value)"
+                    >
+                      <option value="">Please Select</option>
+                      <template x-for="block in blocks">
+                        <option :value="block.name" x-text="block.name"></option>
+                      </template>
+                    </select>
+
+                    <button
+                      type="button"
+                      @click="removeSetting(index)"
+                    >
+                      Remove
+                    </button>
+                  </li>
+                </template>
+              </ul>
+            </div>
+          </div>
+
+          <textarea
+            x-text="JSON.stringify(data, null, 2)"
+            rows="10"
+            class="font-mono border border-gray-100 rounded-lg bg-gray-50"
+          ></textarea>
         </form>
-
-        <textarea
-          x-text="JSON.stringify(data, null, 2)"
-          rows="20"
-          cols="100"
-        ></textarea>
-
-        <button
-          type="button"
-          @click="copyToClipboard"
-        >
-          Copy to Clipboard
-        </button>
       </div>
     </section>
   </main>
@@ -412,7 +471,6 @@
 
         addSetting() {
           let target = this.target
-
           let setting = Object.assign({}, this.setting)
 
           Object.keys(setting).forEach(key => {
@@ -453,6 +511,16 @@
           } else {
             this.settings.splice(index, 1);
           }
+        },
+
+        moveSetting(index, target) {
+          let block = this.blocks.find(block => block.name === target)
+          let setting = this.settings[index]
+
+          block.settings = []
+          block.settings.push(setting)
+
+          this.settings.splice(index, 1)
         },
 
         addOption() {
