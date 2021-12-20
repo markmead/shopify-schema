@@ -336,67 +336,147 @@
             </button>
           </div>
 
-          <div class="grid grid-cols-2 gap-8">
-            <div>
-              <p>
-                Blocks
-              </p>
-
-              <ul class="pl-4">
-                <template x-for="(block, index) in blocks">
-                  <li>
-                    <span x-text="block.name"></span>
-
-                    <ul>
-                      <template x-for="(setting, index) in block.settings">
-                        <li>
-                          <span x-text="setting.label"></span>
-                        </li>
-                      </template>
-                    </ul>
-                  </li>
-                </template>
-              </ul>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="col-span-2">
+              <textarea
+                x-text="JSON.stringify(data, null, 2)"
+                rows="10"
+                class="font-mono border border-gray-100 rounded-lg bg-gray-50"
+              ></textarea>
             </div>
 
             <div>
-              <p>
-                Settings
-              </p>
+              <div class="space-y-8">
+                <div>
+                  <p class="font-medium">
+                    Blocks
+                  </p>
 
-              <ul>
-                <template x-for="(setting, index) in settings">
-                  <li>
-                    <span x-text="setting.label"></span>
+                  <ul class="mt-4 space-y-4">
+                    <template x-for="(block, index) in blocks">
+                      <li class="space-y-1.5 border-l-[3px] border-gray-100 pl-1.5">
+                        <div class="flex items-center justify-between">
+                          <span
+                            x-text="block.name"
+                            class="text-sm font-medium"
+                          >
+                          </span>
 
-                    <label :for="`target_${setting.id}`"></label>
-                    <select
-                      :id="`target_${setting.id}`"
-                      @change="moveSetting(index, $event.target.value)"
-                    >
-                      <option value="">Please Select</option>
-                      <template x-for="block in blocks">
-                        <option :value="block.name" x-text="block.name"></option>
-                      </template>
-                    </select>
+                          <button
+                            type="button"
+                            @click="removeBlock(index)"
+                            class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                          >
+                            Remove
+                          </button>
+                        </div>
 
-                    <button
-                      type="button"
-                      @click="removeSetting(index)"
-                    >
-                      Remove
-                    </button>
-                  </li>
-                </template>
-              </ul>
+                        <template x-if="block.settings.length > 0">
+                          <div class="pl-1.5">
+                            <p class="text-xs font-medium">
+                              Settings
+                            </p>
+
+                            <ul class="mt-1.5 pl-1.5">
+                              <template x-for="(setting, index) in block.settings">
+                                <li x-data="{ show: false }">
+                                  <div class="flex items-center justify-between">
+                                    <span
+                                      x-text="setting.label"
+                                      class="text-xs font-medium"
+                                    >
+                                    </span>
+
+                                    <div class="flex items-center space-x-1.5">
+                                      <button
+                                        type="button"
+                                        @click="show = !show"
+                                        class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                                      >
+                                        Move
+                                      </button>
+
+                                      <button
+                                        type="button"
+                                        @click="removeSetting(index)"
+                                        class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                                      >
+                                        Remove
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  <div x-show="show">
+                                    <select @change="moveSetting(index, block.name, $event.target.value)">
+                                      <option value="">Please Select</option>
+                                      <option value="settings">Settings</option>
+                                      <template x-for="block in blocks">
+                                        <option :value="block.name" x-text="block.name"></option>
+                                      </template>
+                                    </select>
+                                  </div>
+                                </li>
+                              </template>
+                            </ul>
+                          </div>
+                        </template>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="font-medium">
+                    Settings
+                  </p>
+
+                  <ul class="mt-4 space-y-4">
+                    <template x-for="(setting, index) in settings">
+                      <li
+                        x-data="{ show: false }"
+                        class="px-3 py-1.5 rounded bg-gray-50"
+                      >
+                        <div class="flex items-center justify-between">
+                          <span
+                            x-text="setting.label"
+                            class="text-xs font-medium"
+                          >
+                          </span>
+
+                          <div class="flex items-center space-x-1.5">
+                            <button
+                              type="button"
+                              @click="show = !show"
+                              class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                            >
+                              Move
+                            </button>
+
+                            <button
+                              type="button"
+                              @click="removeSetting(index)"
+                              class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+
+                        <div x-show="show">
+                          <select @change="moveSetting(index, 'settings', $event.target.value)">
+                            <option value="">Please Select</option>
+                            <template x-for="block in blocks">
+                              <option :value="block.name" x-text="block.name"></option>
+                            </template>
+                          </select>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
-
-          <textarea
-            x-text="JSON.stringify(data, null, 2)"
-            rows="10"
-            class="font-mono border border-gray-100 rounded-lg bg-gray-50"
-          ></textarea>
         </form>
       </div>
     </section>
@@ -513,14 +593,22 @@
           }
         },
 
-        moveSetting(index, target) {
-          let block = this.blocks.find(block => block.name === target)
-          let setting = this.settings[index]
+        moveSetting(index, name, target) {
+          if(target === 'settings') {
+            let block = this.blocks.find(block => block.name === name)
+            let setting = block.settings[index]
 
-          block.settings = []
-          block.settings.push(setting)
+            this.settings.push(setting)
 
-          this.settings.splice(index, 1)
+            block.settings.splice(index, 1)
+          } else {
+            let block = this.blocks.find(block => block.name === target)
+            let setting = this.settings[index]
+
+            block.settings.push(setting)
+
+            this.settings.splice(index, 1)
+          }
         },
 
         addOption() {
@@ -544,7 +632,7 @@
           let block = Object.assign({}, this.block)
 
           Object.keys(block).forEach(key => {
-            block[key].length === 0 && delete block[key]
+            block[key] === '' && delete block[key]
           })
 
           if (types.includes(type)) return
@@ -574,7 +662,7 @@
           }
 
           Object.keys(data).forEach(key => {
-            !data[key] && delete data[key]
+            data[key] === '' && delete data[key]
           })
 
           this.data = data
