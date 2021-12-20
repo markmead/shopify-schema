@@ -10,336 +10,379 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./css/build.css">
+  <link rel="stylesheet" href="build.css">
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="antialiased">
-  <main
-    role="main"
-    class="grid h-screen place-content-center"
-  >
-    <section
-      x-data="schema"
-      class="max-w-5xl mx-auto border max-h-[600px] overflow-y-auto"
-    >
-      <div class="p-8">
+<body class="relative antialiased">
+  <main role="main">
+    <div class="max-w-screen-xl px-4 py-12 mx-auto">
+      <section>
+        <div class="max-w-prose">
+          <h1 class="text-3xl font-bold">
+            Section Schema UI for Shopify
+          </h1>
+
+          <p class="mt-4">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos iste magnam doloribus atque rerum. Optio, quam ipsam magni nam est quisquam quasi ipsa explicabo soluta qui, at fugiat nisi quae?
+          </p>
+        </div>
+      </section>
+
+      <section
+        x-data="schema"
+        class="p-8 mt-8 border border-gray-100 bg-gray-50 rounded-3xl"
+      >
         <form
           @submit.prevent="createSection"
-          class="space-y-8"
+          class="flow-root"
         >
-          <fieldset class="grid grid-cols-3 gap-4">
-            <div>
-              <legend class="font-bold">
-                Details
-              </legend>
-            </div>
+          <div class="-my-8 divide-y divide-gray-100">
+            <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
+              <div>
+                <legend class="font-medium">
+                  <span
+                    role="img"
+                    class="mr-1.5"
+                  >
+                    📇
+                  </span>
 
-            <div class="grid grid-cols-6 col-span-2 gap-4">
-              <div class="col-span-3">
-                <label for="details_name">Name</label>
-                <input type="text" id="details_name" x-model="details.name">
+                  Details
+                </legend>
+
+                <p class="mt-1 text-sm">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                </p>
               </div>
 
-              <div class="col-span-3">
-                <label for="details_class">Class</label>
-                <input type="text" id="details_class" x-model="details.class">
+              <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
+                <div class="lg:col-span-3">
+                  <label for="details_name">Name</label>
+                  <input type="text" id="details_name" x-model="details.name">
+                </div>
+
+                <div class="lg:col-span-3">
+                  <label for="details_class">Class</label>
+                  <input type="text" id="details_class" x-model="details.class">
+                </div>
+
+                <div class="lg:col-span-2">
+                  <label for="details_tag">Tag</label>
+                  <select id="details_tag" x-model="details.tag">
+                    <option value="div">div</option>
+                    <option value="section">section</option>
+                    <option value="header">header</option>
+                    <option value="footer">footer</option>
+                    <option value="article">article</option>
+                    <option value="aside">aside</option>
+                  </select>
+                </div>
+
+                <div class="lg:col-span-2">
+                  <label for="details_max_blocks">Max Blocks</label>
+                  <input type="number" id="details_max_blocks" x-model="details.max_blocks">
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
+              <div>
+                <legend class="font-medium">
+                  <span
+                    role="img"
+                    class="mr-1.5"
+                  >
+                    ⚙️
+                  </span>
+
+                  Settings
+                </legend>
+
+                <p class="mt-1 text-sm">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                </p>
               </div>
 
-              <div class="col-span-2">
-                <label for="details_tag">Tag</label>
-                <select id="details_tag" x-model="details.tag">
-                  <option value="div">div</option>
-                  <option value="section">section</option>
-                  <option value="header">header</option>
-                  <option value="footer">footer</option>
-                  <option value="article">article</option>
-                  <option value="aside">aside</option>
-                </select>
-              </div>
-
-              <div class="col-span-2">
-                <label for="details_max_blocks">Max Blocks</label>
-                <input type="number" id="details_max_blocks" x-model="details.max_blocks">
-              </div>
-            </div>
-          </fieldset>
-
-          <fieldset class="grid grid-cols-3 gap-4">
-            <div>
-              <legend class="font-bold">
-                Settings
-              </legend>
-            </div>
-
-            <div class="grid grid-cols-6 col-span-2 gap-4">
-              <template x-if="shouldShow('id')">
-                <div class="col-span-3">
-                  <label for="setting_id">ID</label>
-                  <input type="text" id="setting_id" x-model="setting.id">
-                </div>
-              </template>
-
-              <div class="col-span-3">
-                <label for="setting_type">Type</label>
-                <select id="setting_type" x-model="setting.type">
-                  <option value="text">text</option>
-                  <option value="textarea">textarea</option>
-                  <option value="number">number</option>
-                  <option value="radio">radio</option>
-                  <option value="range">range</option>
-                  <option value="select">select</option>
-                  <option value="article">article</option>
-                  <option value="blog">blog</option>
-                  <option value="collection">collection</option>
-                  <option value="color">color</option>
-                  <!-- <option value="color_background">color_background</option> -->
-                  <option value="font_picker">font picker</option>
-                  <option value="html">html</option>
-                  <option value="image_picker">image picker</option>
-                  <option value="link_link">link link</option>
-                  <option value="liquid">liquid</option>
-                  <option value="richtext">richtext</option>
-                  <option value="url">url</option>
-                  <option value="video_url">video url</option>
-                  <option value="header">header</option>
-                </select>
-              </div>
-
-              <template x-if="shouldShow('label')">
-                <div class="col-span-3">
-                  <label for="setting_label">Label</label>
-                  <input type="text" id="setting_label" x-model="setting.label">
-                </div>
-              </template>
-
-              <template x-if="shouldShow('placeholder')">
-                <div class="col-span-3">
-                  <label for="setting_placeholder">Placeholder</label>
-                  <input type="text" id="setting_placeholder" x-model="setting.placeholder">
-                </div>
-              </template>
-
-              <template x-if="shouldShow('content')">
-                <div class="col-span-3">
-                  <label for="setting_content">Content</label>
-                  <input type="text" id="setting_content" x-model="setting.content">
-                </div>
-              </template>
-
-              <template x-if="shouldShow('default')">
-                <div class="col-span-6">
-                  <label for="setting_default">Default</label>
-                  <textarea id="setting_default" rows="4" x-model="setting.default">
-                  </textarea>
-                </div>
-              </template>
-
-              <template x-if="shouldShow('info')">
-                <div class="col-span-6">
-                  <label for="setting_info">Info</label>
-                  <textarea id="settings_inf" rows="4" x-model="setting.info">
-                  </textarea>
-                </div>
-              </template>
-
-              <template x-if="setting.type === 'video_url'">
-                <div class="col-span-6">
-                  <p class="text-sm font-medium">
-                    Accept
-                  </p>
-
-                  <div class="mt-4 space-y-2">
-                    <div>
-                      <label
-                        for="setting_accept_vimeo"
-                        class="flex items-center"
-                      >
-                        <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="setting.accept">
-
-                        <span class="ml-1.5 text-sm">
-                          Vimeo
-                        </span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label
-                        for="setting_accept_youtube"
-                        class="flex items-center"
-                      >
-                        <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="setting.accept">
-
-                        <span class="ml-1.5 text-sm">
-                          YouTube
-                        </span>
-                      </label>
-                    </div>
+              <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
+                <template x-if="shouldShow('id')">
+                  <div class="lg:col-span-3">
+                    <label for="setting_id">ID</label>
+                    <input type="text" id="setting_id" x-model="setting.id">
                   </div>
+                </template>
+
+                <div class="lg:col-span-3">
+                  <label for="setting_type">Type</label>
+                  <select id="setting_type" x-model="setting.type">
+                    <option value="text">text</option>
+                    <option value="textarea">textarea</option>
+                    <option value="number">number</option>
+                    <option value="radio">radio</option>
+                    <option value="range">range</option>
+                    <option value="select">select</option>
+                    <option value="article">article</option>
+                    <option value="blog">blog</option>
+                    <option value="collection">collection</option>
+                    <option value="color">color</option>
+                    <!-- <option value="color_background">color_background</option> -->
+                    <option value="font_picker">font picker</option>
+                    <option value="html">html</option>
+                    <option value="image_picker">image picker</option>
+                    <option value="link_link">link link</option>
+                    <option value="liquid">liquid</option>
+                    <option value="richtext">richtext</option>
+                    <option value="url">url</option>
+                    <option value="video_url">video url</option>
+                    <option value="header">header</option>
+                  </select>
                 </div>
-              </template>
 
-              <template x-if="setting.type === 'range'">
-                <div class="col-span-6">
-                  <p class="text-sm font-medium">
-                    Range
-                  </p>
-
-                  <div class="grid grid-cols-6 gap-4 mt-4">
-                    <div class="col-span-3">
-                      <label for="setting_min">Min</label>
-                      <input type="number" id="setting_min" x-model="setting.min">
-                    </div>
-
-                    <div class="col-span-3">
-                      <label for="setting_max">Max</label>
-                      <input type="number" id="setting_max" x-model="setting.max">
-                    </div>
-
-                    <div class="col-span-3">
-                      <label for="setting_step">Step</label>
-                      <input type="number" id="setting_step" x-model="setting.step">
-                    </div>
-
-                    <div class="col-span-3">
-                      <label for="setting_unit">Unit</label>
-                      <select id="setting_unit" x-model="setting.unit">
-                        <option value="px">px</option>
-                        <option value="rem">rem</option>
-                        <option value="em">em</option>
-                        <option value="%">%</option>
-                      </select>
-                    </div>
+                <template x-if="shouldShow('label')">
+                  <div class="lg:col-span-3">
+                    <label for="setting_label">Label</label>
+                    <input type="text" id="setting_label" x-model="setting.label">
                   </div>
-                </div>
-              </template>
+                </template>
 
-              <template x-if="['radio', 'select'].includes(setting.type)">
-                <div class="col-span-6">
-                  <p class="text-sm font-medium">
-                    Options
-                  </p>
+                <template x-if="shouldShow('placeholder')">
+                  <div class="lg:col-span-3">
+                    <label for="setting_placeholder">Placeholder</label>
+                    <input type="text" id="setting_placeholder" x-model="setting.placeholder">
+                  </div>
+                </template>
 
-                  <div class="grid grid-cols-6 gap-4 mt-4">
-                    <div class="col-span-3">
-                      <label for="option_value">Value</label>
-                      <input type="text" id="option_value" x-model="option.value">
-                    </div>
+                <template x-if="shouldShow('content')">
+                  <div class="lg:col-span-3">
+                    <label for="setting_content">Content</label>
+                    <input type="text" id="setting_content" x-model="setting.content">
+                  </div>
+                </template>
 
-                    <div class="col-span-3">
-                      <label for="option_label">Label</label>
-                      <input type="text" id="option_label" x-model="option.label">
-                    </div>
+                <template x-if="shouldShow('default')">
+                  <div class="lg:col-span-6">
+                    <label for="setting_default">Default</label>
+                    <textarea id="setting_default" rows="4" x-model="setting.default">
+                    </textarea>
 
-                    <template x-if="setting.type === 'select'">
-                      <div class="col-span-3">
-                        <label for="option_group">Group</label>
-                        <input type="text" id="option_group" x-model="option.group">
-                      </div>
+                    <template x-if="setting.type === 'richtext'">
+                      <p class="mt-1 text-xs text-gray-500">
+                        When using richtext you need to wrap your code in HTML
+                      </p>
                     </template>
                   </div>
+                </template>
 
+                <template x-if="shouldShow('info')">
+                  <div class="lg:col-span-6">
+                    <label for="setting_info">Info</label>
+                    <textarea id="setting_info" rows="4" x-model="setting.info">
+                    </textarea>
+                  </div>
+                </template>
+
+                <template x-if="setting.type === 'video_url'">
+                  <div class="lg:col-span-6">
+                    <p class="text-sm font-medium">
+                      Accept
+                    </p>
+
+                    <div class="mt-4 space-y-2">
+                      <div>
+                        <label
+                          for="setting_accept_vimeo"
+                          class="flex items-center"
+                        >
+                          <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="setting.accept">
+
+                          <span class="ml-1.5 text-sm">
+                            Vimeo
+                          </span>
+                        </label>
+                      </div>
+
+                      <div>
+                        <label
+                          for="setting_accept_youtube"
+                          class="flex items-center"
+                        >
+                          <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="setting.accept">
+
+                          <span class="ml-1.5 text-sm">
+                            YouTube
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+
+                <template x-if="setting.type === 'range'">
+                  <div class="lg:col-span-6">
+                    <p class="text-sm font-medium">
+                      Range
+                    </p>
+
+                    <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
+                      <div class="lg:col-span-3">
+                        <label for="setting_min">Min</label>
+                        <input type="number" id="setting_min" x-model="setting.min">
+                      </div>
+
+                      <div class="lg:col-span-3">
+                        <label for="setting_max">Max</label>
+                        <input type="number" id="setting_max" x-model="setting.max">
+                      </div>
+
+                      <div class="lg:col-span-3">
+                        <label for="setting_step">Step</label>
+                        <input type="number" id="setting_step" x-model="setting.step">
+                      </div>
+
+                      <div class="lg:col-span-3">
+                        <label for="setting_unit">Unit</label>
+                        <select id="setting_unit" x-model="setting.unit">
+                          <option value="px">px</option>
+                          <option value="rem">rem</option>
+                          <option value="em">em</option>
+                          <option value="%">%</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+
+                <template x-if="['radio', 'select'].includes(setting.type)">
+                  <div class="lg:col-span-6">
+                    <p class="text-sm font-medium">
+                      Options
+                    </p>
+
+                    <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
+                      <div class="lg:col-span-3">
+                        <label for="option_value">Value</label>
+                        <input type="text" id="option_value" x-model="option.value">
+                      </div>
+
+                      <div class="lg:col-span-3">
+                        <label for="option_label">Label</label>
+                        <input type="text" id="option_label" x-model="option.label">
+                      </div>
+
+                      <template x-if="setting.type === 'select'">
+                        <div class="lg:col-span-3">
+                          <label for="option_group">Group</label>
+                          <input type="text" id="option_group" x-model="option.group">
+                        </div>
+                      </template>
+                    </div>
+
+                    <button
+                      type="button"
+                      @click="addOption"
+                      class="mt-4 bg-gray-200"
+                    >
+                      Add Option
+
+                      <span role="img">
+                        🤔
+                      </span>
+                    </button>
+                  </div>
+                </template>
+
+                <div class="lg:col-span-6">
+                  <label for="target">
+                    Block
+                  </label>
+
+                  <select id="target" x-model="target">
+                    <option value="">Please Select</option>
+                    <template x-for="block in blocks">
+                      <option :value="block.name" x-text="block.name"></option>
+                    </template>
+                  </select>
+                </div>
+
+                <div class="lg:col-span-6">
                   <button
                     type="button"
-                    @click="addOption"
-                    class="px-4 py-2 mt-4 text-sm bg-gray-100 rounded"
+                    @click="addSetting"
+                    class="bg-gray-200"
                   >
-                    Add Option
+                    Add Setting
+
+                    <span role="img">
+                      🥳
+                    </span>
                   </button>
                 </div>
-              </template>
+              </div>
+            </fieldset>
 
-              <div class="col-span-6">
-                <label for="target">
-                  Block
-                </label>
+            <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
+              <div>
+                <legend class="font-medium">
+                  <span
+                    role="img"
+                    class="mr-1.5"
+                  >
+                    🟧
+                  </span>
 
-                <select id="target" x-model="target">
-                  <option value="">Please Select</option>
-                  <template x-for="block in blocks">
-                    <option :value="block.name" x-text="block.name"></option>
-                  </template>
-                </select>
+                  Blocks
+                </legend>
+
+                <p class="mt-1 text-sm">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                </p>
               </div>
 
-              <div class="col-span-6">
-                <button
-                  type="button"
-                  @click="addSetting"
-                  class="px-4 py-2 text-sm bg-gray-100 rounded"
-                >
-                  Add Setting
-                </button>
+              <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
+                <div class="lg:col-span-3">
+                  <label for="block_name">Name</label>
+                  <input type="text" id="block_name" x-model="block.name">
+                </div>
+
+                <div class="lg:col-span-3">
+                  <label for="block_type">Type</label>
+                  <input type="text" id="block_type" x-model="block.type">
+                </div>
+
+                <div class="lg:col-span-3">
+                  <label for="block_limit">Limit</label>
+                  <input type="number" id="block_limit" x-model="block.limit">
+                </div>
+
+                <div class="lg:col-span-6">
+                  <button
+                    type="button"
+                    @click="addBlock"
+                    class="bg-gray-200"
+                  >
+                    Add Block
+
+                    <span role="img">
+                      🧱
+                    </span>
+                  </button>
+                </div>
               </div>
-            </div>
-          </fieldset>
+            </fieldset>
 
-          <fieldset class="grid grid-cols-3 gap-4">
-            <div>
-              <legend class="text-sm font-medium">
-                Blocks
-              </legend>
-            </div>
-
-            <div class="grid grid-cols-6 col-span-2 gap-4">
-              <div class="col-span-3">
-                <label for="block_name">Name</label>
-                <input type="text" id="block_name" x-model="block.name">
-              </div>
-
-              <div class="col-span-3">
-                <label for="block_type">Type</label>
-                <input type="text" id="block_type" x-model="block.type">
-              </div>
-
-              <div class="col-span-3">
-                <label for="block_limit">Limit</label>
-                <input type="number" id="block_limit" x-model="block.limit">
-              </div>
-
-              <div class="col-span-6">
-                <button
-                  type="button"
-                  @click="addBlock"
-                  class="px-4 py-2 text-sm bg-gray-100 rounded"
-                >
-                  Add Block
-                </button>
-              </div>
-            </div>
-          </fieldset>
-
-          <div class="flex justify-end space-x-4">
-            <button
-              type="submit"
-              class="px-4 py-2 text-sm bg-green-100 rounded"
-            >
-              Update Section
-            </button>
-
-            <button
-              type="button"
-              @click="copyToClipboard"
-              class="px-4 py-2 text-sm bg-gray-100 rounded"
-            >
-              Copy to Clipboard
-            </button>
-          </div>
-
-          <div class="grid grid-cols-3 gap-4">
-            <div class="col-span-2">
-              <textarea
-                x-text="JSON.stringify(data, null, 2)"
-                rows="10"
-                class="font-mono border border-gray-100 rounded-lg bg-gray-50"
-              ></textarea>
-            </div>
-
-            <div>
+            <div class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
               <div class="space-y-8">
                 <div>
                   <p class="font-medium">
                     Blocks
+                  </p>
+
+                  <p class="mt-1 text-sm text-gray-500">
+                    Nothing to see here... Let's add some blocks!
+
+                    <span role="img">
+                      🤖
+                    </span>
                   </p>
 
                   <ul class="mt-4 space-y-4">
@@ -420,6 +463,16 @@
                     Settings
                   </p>
 
+                  <template x-if="settings.length === 0">
+                    <p class="mt-1 text-sm text-gray-500">
+                      Nothing to see here... Let's add a setting!
+
+                      <span role="img">
+                        💪
+                      </span>
+                    </p>
+                  </template>
+
                   <ul class="mt-4 space-y-4">
                     <template x-for="(setting, index) in settings">
                       <li
@@ -465,11 +518,45 @@
                   </ul>
                 </div>
               </div>
+
+              <div class="relative lg:col-span-2">
+                <textarea
+                  rows="10"
+                  id="textarea"
+                  x-text="JSON.stringify(data, null, 2)"
+                  class="block font-mono bg-white border border-gray-200 rounded-lg"
+                ></textarea>
+
+                <button
+                  type="button"
+                  @click="copyToClipboard"
+                  class="absolute bg-gray-200 bottom-3 right-3"
+                >
+                  Copy to Clipboard
+
+                  <span role="img">
+                    📋
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
+
+          <div class="flex justify-end mt-8">
+            <button
+              type="submit"
+              class="w-full text-white bg-green-600 lg:w-auto"
+            >
+              Update Section
+
+              <span role="img">
+                👌
+              </span>
+            </button>
+          </div>
         </form>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
   <script>
