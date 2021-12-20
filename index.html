@@ -4,324 +4,342 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopify Schema Creator</title>
+  <title>Section Schema UI | Shopify</title>
+
+  <link rel="stylesheet" href="index.css">
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+    }
+  </style>
 </head>
+
 <body>
-  <main>
-    <section x-data="schema">
-      <form @submit.prevent="createSection">
-        <fieldset>
-          <legend>
-            1. Details
-          </legend>
-
-          <div>
-            <label for="details_name">Name</label>
-            <input type="text" id="details_name" x-model="details.name">
-          </div>
-
-          <div>
-            <label for="details_tag">Tag</label>
-            <select id="details_tag" x-model="details.tag">
-              <option value="div">div</option>
-              <option value="section">section</option>
-              <option value="header">header</option>
-              <option value="footer">footer</option>
-              <option value="article">article</option>
-              <option value="aside">aside</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="details_class">Class</label>
-            <input type="text" id="details_class" x-model="details.class">
-          </div>
-
-          <div>
-            <label for="details_max_blocks">Max Blocks</label>
-            <input type="number" id="details_max_blocks" x-model="details.max_blocks">
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>
-            2. Settings
-          </legend>
-
-          <div>
-            <label for="setting_type">Type</label>
-            <select id="setting_type" x-model="setting.type">
-              <option value="text">text</option>
-              <option value="textarea">textarea</option>
-              <option value="number">number</option>
-              <option value="radio">radio</option>
-              <option value="range">range</option>
-              <option value="select">select</option>
-              <option value="article">article</option>
-              <option value="blog">blog</option>
-              <option value="collection">collection</option>
-              <option value="color">color</option>
-              <!-- <option value="color_background">color_background</option> -->
-              <option value="font_picker">font picker</option>
-              <option value="html">html</option>
-              <option value="image_picker">image picker</option>
-              <option value="link_link">link link</option>
-              <option value="liquid">liquid</option>
-              <option value="richtext">richtext</option>
-              <option value="url">url</option>
-              <option value="video_url">video url</option>
-              <option value="header">header</option>
-            </select>
-          </div>
-
-          <template x-if="shouldShow('id')">
+  <main
+    role="main"
+    class="grid place-content-center h-screen"
+  >
+    <section
+      x-data="schema"
+      class="max-w-5xl mx-auto border max-h-[600px] overflow-y-auto"
+    >
+      <div class="p-8">
+        <form
+          @submit.prevent="createSection"
+          class="space-y-8"
+        >
+          <fieldset class="grid grid-cols-3 gap-4">
             <div>
-              <label for="setting_id">ID</label>
-              <input type="text" id="setting_id" x-model="setting.id">
-            </div>
-          </template>
-
-          <template x-if="shouldShow('label')">
-            <div>
-              <label for="setting_label">Label</label>
-              <input type="text" id="setting_label" x-model="setting.label">
-            </div>
-          </template>
-
-          <template x-if="shouldShow('content')">
-            <div>
-              <label for="setting_content">Content</label>
-              <input type="text" id="settings_content" x-model="setting.content">
-            </div>
-          </template>
-
-          <template x-if="shouldShow('placeholder')">
-            <div>
-              <label for="setting_placeholder">Placeholder</label>
-              <input type="text" id="settings_placeholder" x-model="setting.placeholder">
-            </div>
-          </template>
-
-          <template x-if="shouldShow('default')">
-            <div>
-              <label for="setting_default">Default</label>
-              <textarea id="settings_default" rows="4" x-model="setting.default">
-              </textarea>
-            </div>
-          </template>
-
-          <template x-if="shouldShow('info')">
-            <div>
-              <label for="setting_info">Info</label>
-              <textarea id="settings_info" rows="4" x-model="setting.info">
-              </textarea>
-            </div>
-          </template>
-
-          <template x-if="setting.type === 'video_url'">
-            <fieldset>
-              <legend>
-                Accept
+              <legend class="font-medium">
+                Details
               </legend>
+            </div>
 
-              <div>
-                <label for="setting_accept_vimeo">
-                  <span>
-                    Vimeo
-                  </span>
-
-                  <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="setting.accept">
-                </label>
+            <div class="col-span-2 grid grid-cols-6 gap-4">
+              <div class="col-span-3">
+                <label for="details_name">Name</label>
+                <input type="text" id="details_name" x-model="details.name">
               </div>
 
-              <div>
-                <label for="setting_accept_youtube">
-                  <span>
-                    YouTube
-                  </span>
-
-                  <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="setting.accept">
-                </label>
-              </div>
-            </fieldset>
-          </template>
-
-          <template x-if="setting.type === 'range'">
-            <fieldset>
-              <legend>
-                Range
-              </legend>
-
-              <div>
-                <label for="setting_min">Min</label>
-                <input type="number" id="setting_min" x-model="setting.min">
+              <div class="col-span-3">
+                <label for="details_class">Class</label>
+                <input type="text" id="details_class" x-model="details.class">
               </div>
 
-              <div>
-                <label for="setting_max">Max</label>
-                <input type="number" id="setting_max" x-model="setting.max">
-              </div>
-
-              <div>
-                <label for="setting_step">Step</label>
-                <input type="number" id="setting_step" x-model="setting.step">
-              </div>
-
-              <div>
-                <label for="setting_unit">Unit</label>
-                <select id="setting_unit" x-model="setting.unit">
-                  <option value="px">px</option>
-                  <option value="rem">rem</option>
-                  <option value="em">em</option>
-                  <option value="%">%</option>
+              <div class="col-span-2">
+                <label for="details_tag">Tag</label>
+                <select id="details_tag" x-model="details.tag">
+                  <option value="div">div</option>
+                  <option value="section">section</option>
+                  <option value="header">header</option>
+                  <option value="footer">footer</option>
+                  <option value="article">article</option>
+                  <option value="aside">aside</option>
                 </select>
               </div>
-            </fieldset>
-          </template>
 
-          <template x-if="['radio', 'select'].includes(setting.type)">
-            <fieldset>
-              <legend>
-                Options
+              <div class="col-span-2">
+                <label for="details_max_blocks">Max Blocks</label>
+                <input type="number" id="details_max_blocks" x-model="details.max_blocks">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="grid grid-cols-3 gap-4">
+            <div>
+              <legend class="font-medium">
+                Settings
               </legend>
+            </div>
 
-              <div>
-                <label for="option_value">Value</label>
-                <input type="text" id="option_value" x-model="option.value">
-              </div>
-
-              <div>
-                <label for="option_label">Label</label>
-                <input type="text" id="option_label" x-model="option.label">
-              </div>
-
-              <template x-if="setting.type === 'select'">
-                <div>
-                  <label for="option_group">Group</label>
-                  <input type="text" id="option_group" x-model="option.group">
+            <div class="col-span-2 grid grid-cols-6 gap-4">
+              <template x-if="shouldShow('id')">
+                <div class="col-span-3">
+                  <label for="setting_id">ID</label>
+                  <input type="text" id="setting_id" x-model="setting.id">
                 </div>
               </template>
 
-              <button
-                type="button"
-                @click="addOption"
-              >
-                Add Option
-              </button>
-            </fieldset>
-          </template>
+              <div class="col-span-3">
+                <label for="setting_type">Type</label>
+                <select id="setting_type" x-model="setting.type">
+                  <option value="text">text</option>
+                  <option value="textarea">textarea</option>
+                  <option value="number">number</option>
+                  <option value="radio">radio</option>
+                  <option value="range">range</option>
+                  <option value="select">select</option>
+                  <option value="article">article</option>
+                  <option value="blog">blog</option>
+                  <option value="collection">collection</option>
+                  <option value="color">color</option>
+                  <!-- <option value="color_background">color_background</option> -->
+                  <option value="font_picker">font picker</option>
+                  <option value="html">html</option>
+                  <option value="image_picker">image picker</option>
+                  <option value="link_link">link link</option>
+                  <option value="liquid">liquid</option>
+                  <option value="richtext">richtext</option>
+                  <option value="url">url</option>
+                  <option value="video_url">video url</option>
+                  <option value="header">header</option>
+                </select>
+              </div>
 
-          <div>
-            <label for="target">
-              Target
-            </label>
-
-            <select id="target" x-model="target">
-              <option value="">Please Select</option>
-              <template x-for="block in blocks">
-                <option :value="block.name" x-text="block.name"></option>
+              <template x-if="shouldShow('label')">
+                <div class="col-span-3">
+                  <label for="setting_label">Label</label>
+                  <input type="text" id="setting_label" x-model="setting.label">
+                </div>
               </template>
-            </select>
-          </div>
 
-          <button
-            type="button"
-            @click="addSetting"
-          >
-            Add Setting
-          </button>
-        </fieldset>
+              <template x-if="shouldShow('placeholder')">
+                <div class="col-span-3">
+                  <label for="setting_placeholder">Placeholder</label>
+                  <input type="text" id="setting_placeholder" x-model="setting.placeholder">
+                </div>
+              </template>
 
-        <fieldset>
-          <legend>
-            3. Blocks
-          </legend>
+              <template x-if="shouldShow('content')">
+                <div class="col-span-3">
+                  <label for="setting_content">Content</label>
+                  <input type="text" id="setting_content" x-model="setting.content">
+                </div>
+              </template>
 
-          <div>
-            <label for="block_name">Name</label>
-            <input type="text" id="block_name" x-model="block.name">
-          </div>
+              <template x-if="shouldShow('default')">
+                <div class="col-span-6">
+                  <label for="setting_default">Default</label>
+                  <textarea id="setting_default" rows="4" x-model="setting.default">
+                  </textarea>
+                </div>
+              </template>
 
-          <div>
-            <label for="block_type">Type</label>
-            <input type="text" id="block_type" x-model="block.type">
-          </div>
+              <template x-if="shouldShow('info')">
+                <div class="col-span-6">
+                  <label for="setting_info">Info</label>
+                  <textarea id="settings_inf" rows="4" x-model="setting.info">
+                  </textarea>
+                </div>
+              </template>
 
-          <div>
-            <label for="block_limit">Limit</label>
-            <input type="number" id="block_limit" x-model="block.limit">
-          </div>
+              <template x-if="setting.type === 'video_url'">
+                <div class="col-span-6">
+                  <p class="text-sm font-medium">
+                    Accept
+                  </p>
 
-          <button
-            type="button"
-            @click="addBlock"
-          >
-            Add Block
-          </button>
-        </fieldset>
+                  <div class="mt-4 space-y-2">
+                    <div>
+                      <label
+                        for="setting_accept_vimeo"
+                        class="flex items-center"
+                      >
+                        <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="setting.accept">
 
-        <button type="submit">
-          Update Section
-        </button>
-      </form>
+                        <span class="ml-1.5 text-sm">
+                          Vimeo
+                        </span>
+                      </label>
+                    </div>
 
-      <div>
-        <template x-for="(item, index) in settings">
-          <div>
-            <p x-text="item.label"></p>
+                    <div>
+                      <label
+                        for="setting_accept_youtube"
+                        class="flex items-center"
+                      >
+                        <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="setting.accept">
 
-            <button
-              type="button"
-              @click="removeSetting(index)"
-            >
-              Remove Setting
-            </button>
-          </div>
-        </template>
-      </div>
+                        <span class="ml-1.5 text-sm">
+                          YouTube
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </template>
 
-      <div>
-        <template x-for="(item, index) in blocks">
-          <div>
-            <p x-text="item.name"></p>
+              <template x-if="setting.type === 'range'">
+                <div class="col-span-6">
+                  <p class="text-sm font-medium">
+                    Range
+                  </p>
 
-            <button
-              type="button"
-              @click="removeBlock(index)"
-            >
-              Remove Block
-            </button>
+                  <div class="grid grid-cols-6 gap-4 mt-4">
+                    <div class="col-span-3">
+                      <label for="setting_min">Min</label>
+                      <input type="number" id="setting_min" x-model="setting.min">
+                    </div>
 
-            <template x-for="(setting, index) in item.settings">
-              <div>
-                <p x-text="setting.label"></p>
+                    <div class="col-span-3">
+                      <label for="setting_max">Max</label>
+                      <input type="number" id="setting_max" x-model="setting.max">
+                    </div>
 
+                    <div class="col-span-3">
+                      <label for="setting_step">Step</label>
+                      <input type="number" id="setting_step" x-model="setting.step">
+                    </div>
+
+                    <div class="col-span-3">
+                      <label for="setting_unit">Unit</label>
+                      <select id="setting_unit" x-model="setting.unit">
+                        <option value="px">px</option>
+                        <option value="rem">rem</option>
+                        <option value="em">em</option>
+                        <option value="%">%</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+              <template x-if="['radio', 'select'].includes(setting.type)">
+                <div class="col-span-6">
+                  <p class="text-sm font-medium">
+                    Options
+                  </p>
+
+                  <div class="mt-4 grid grid-cols-6 gap-4">
+                    <div class="col-span-3">
+                      <label for="option_value">Value</label>
+                      <input type="text" id="option_value" x-model="option.value">
+                    </div>
+
+                    <div class="col-span-3">
+                      <label for="option_label">Label</label>
+                      <input type="text" id="option_label" x-model="option.label">
+                    </div>
+
+                    <template x-if="setting.type === 'select'">
+                      <div class="col-span-3">
+                        <label for="option_group">Group</label>
+                        <input type="text" id="option_group" x-model="option.group">
+                      </div>
+                    </template>
+                  </div>
+
+                  <button
+                    type="button"
+                    @click="addOption"
+                    class="px-4 py-2 rounded bg-gray-100 text-sm mt-4"
+                  >
+                    Add Option
+                  </button>
+                </div>
+              </template>
+
+              <div class="col-span-6">
+                <label for="target">
+                  Block
+                </label>
+
+                <select id="target" x-model="target">
+                  <option value="">Please Select</option>
+                  <template x-for="block in blocks">
+                    <option :value="block.name" x-text="block.name"></option>
+                  </template>
+                </select>
+              </div>
+
+              <div class="col-span-6">
                 <button
                   type="button"
-                  @click="removeSetting(index, item.type)"
+                  @click="addSetting"
+                  class="px-4 py-2 rounded bg-gray-100 text-sm mt-4"
                 >
-                  Remove Setting
+                  Add Setting
                 </button>
               </div>
-            </template>
-          </div>
-        </template>
+            </div>
+          </fieldset>
+
+          <fieldset class="grid grid-cols-3 gap-4">
+            <div>
+              <legend class="text-sm font-medium">
+                Blocks
+              </legend>
+            </div>
+
+            <div class="col-span-2 grid grid-cols-6 gap-4">
+              <div class="col-span-3">
+                <label for="block_name">Name</label>
+                <input type="text" id="block_name" x-model="block.name">
+              </div>
+
+              <div class="col-span-3">
+                <label for="block_type">Type</label>
+                <input type="text" id="block_type" x-model="block.type">
+              </div>
+
+              <div class="cols-span-3">
+                <label for="block_limit">Limit</label>
+                <input type="number" id="block_limit" x-model="block.limit">
+              </div>
+
+              <div class="col-span-6">
+                <button
+                  type="button"
+                  @click="addBlock"
+                  class="px-4 py-2 rounded bg-gray-100 text-sm"
+                >
+                  Add Block
+                </button>
+              </div>
+            </div>
+          </fieldset>
+
+          <button
+            type="submit"
+            class="px-4 py-2 rounded bg-green-100 text-sm"
+          >
+            Update Section
+          </button>
+        </form>
+
+        <textarea
+          x-text="JSON.stringify(data, null, 2)"
+          rows="20"
+          cols="100"
+        ></textarea>
+
+        <button
+          type="button"
+          @click="copyToClipboard"
+        >
+          Copy to Clipboard
+        </button>
       </div>
-
-      <textarea
-        x-text="JSON.stringify(data, null, 2)"
-        rows="20"
-        cols="100"
-
-      ></textarea>
-
-      <button
-        type="button"
-        @click="copyToClipboard"
-      >
-        Copy to Clipboard
-      </button>
     </section>
   </main>
 
