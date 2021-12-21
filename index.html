@@ -59,17 +59,17 @@
               <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
                 <div class="lg:col-span-3">
                   <label for="details_name">Name</label>
-                  <input type="text" id="details_name" x-model="details.name">
+                  <input type="text" id="details_name" x-model="details.name" @input="createSection">
                 </div>
 
                 <div class="lg:col-span-3">
                   <label for="details_class">Class</label>
-                  <input type="text" id="details_class" x-model="details.class">
+                  <input type="text" id="details_class" x-model="details.class" @input="createSection">
                 </div>
 
                 <div class="lg:col-span-2">
                   <label for="details_tag">Tag</label>
-                  <select id="details_tag" x-model="details.tag">
+                  <select id="details_tag" x-model="details.tag" @change="createSection">
                     <option value="div">div</option>
                     <option value="section">section</option>
                     <option value="header">header</option>
@@ -81,7 +81,7 @@
 
                 <div class="lg:col-span-2">
                   <label for="details_max_blocks">Max Blocks</label>
-                  <input type="number" id="details_max_blocks" x-model="details.max_blocks">
+                  <input type="number" id="details_max_blocks" x-model="details.max_blocks" @input="createSection">
                 </div>
               </div>
             </fieldset>
