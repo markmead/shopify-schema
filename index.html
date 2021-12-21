@@ -291,6 +291,30 @@
                       </template>
                     </div>
 
+                    <template x-if="setting.options.length > 0">
+                      <div class="flow-root mt-4">
+                        <ul class="flex flex-wrap -m-1">
+                          <template x-for="(option, index) in setting.options">
+                            <li class="p-1">
+                              <strong class="inline-flex items-center px-3 py-1 bg-gray-100 border border-gray-200 rounded-full">
+                                <span class="text-xs font-medium" x-text="option.label"></span>
+
+                                <button
+                                  type="button"
+                                  @click="removeOption(index)"
+                                  class="w-5 h-5 p-0 rounded-full"
+                                >
+                                  <span role="img" class="ml-0">
+                                    🗑
+                                  </span>
+                                </button>
+                              </strong>
+                            </li>
+                          </template>
+                        </ul>
+                      </div>
+                    </template>
+
                     <button
                       type="button"
                       @click="addOption"
@@ -455,7 +479,10 @@
                                     </div>
                                   </div>
 
-                                  <div x-show="show">
+                                  <div
+                                    x-show="show"
+                                    class="mt-1.5"
+                                  >
                                     <select @change="moveSetting(index, block.name, $event.target.value)">
                                       <option value="">Please Select</option>
                                       <option value="settings">Settings</option>
@@ -521,7 +548,10 @@
                           </div>
                         </div>
 
-                        <div x-show="show">
+                        <div
+                          x-show="show"
+                          class="mt-1.5"
+                        >
                           <select @change="moveSetting(index, 'settings', $event.target.value)">
                             <option value="">Please Select</option>
                             <template x-for="block in blocks">
