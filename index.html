@@ -165,9 +165,23 @@
                     <textarea id="setting_default" rows="4" x-model="setting.default">
                     </textarea>
 
-                    <template x-if="setting.type === 'richtext'">
-                      <p class="mt-1 text-xs text-gray-500">
-                        When using richtext you need to wrap your code in HTML
+                    <template x-if="setting.type === 'html'">
+                      <p class="mt-1 text-sm text-gray-500">
+                        <span role="img">
+                          💡
+                        </span>
+
+                        Remember to wrap your content in HTML tags
+                      </p>
+                    </template>
+
+                    <template x-if="setting.type === 'liquid'">
+                      <p class="mt-1 text-sm text-gray-500">
+                        <span role="img">
+                          💡
+                        </span>
+
+                        Remember to wrap your content in Liquid tags
                       </p>
                     </template>
                   </div>
@@ -377,13 +391,15 @@
                     Blocks
                   </p>
 
-                  <p class="mt-1 text-sm text-gray-500">
-                    Nothing to see here... Let's add some blocks!
+                  <template x-if="blocks.length === 0">
+                    <p class="mt-1 text-sm text-gray-500">
+                      Nothing to see here... Let's add some blocks!
 
-                    <span role="img">
-                      🤖
-                    </span>
-                  </p>
+                      <span role="img">
+                        🤖
+                      </span>
+                    </p>
+                  </template>
 
                   <ul class="mt-4 space-y-4">
                     <template x-for="(block, index) in blocks">
@@ -521,7 +537,7 @@
 
               <div class="relative lg:col-span-2">
                 <textarea
-                  rows="10"
+                  rows="20"
                   id="textarea"
                   x-text="JSON.stringify(data, null, 2)"
                   class="block font-mono bg-white border border-gray-200 rounded-lg"
@@ -780,7 +796,7 @@
               show = [...base, 'default']
               break
             case 'html':
-              show = [...base, 'placeholder']
+              show = [...base, 'default']
               break
             case 'liquid':
               show = [...base, 'default']
