@@ -408,6 +408,140 @@
               </div>
             </fieldset>
 
+            <div x-data="{ show: false }">
+              <div class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
+                <div>
+                  <p class="font-medium">
+                    <span
+                      role="img"
+                      class="mr-1.5"
+                    >
+                      🦾
+                    </span>
+
+                    Enhanced Features
+                  </p>
+
+                  <p class="mt-1 text-sm">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                  </p>
+                </div>
+
+                <div class="space-y-8 lg:col-span-2">
+                  <fieldset class="p-8 bg-gray-100 border border-gray-200 rounded-lg">
+                    <div>
+                      <legend class="font-medium">
+                        <span
+                          role="img"
+                          class="mr-1.5"
+                        >
+                          🌀
+                        </span>
+
+                        Presets
+                      </legend>
+
+                      <p class="mt-1 text-sm">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                      </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
+                      <div class="lg:col-span-3">
+                        <label for="preset_name">Name</label>
+                        <input type="text" id="preset_name" x-model="preset.name">
+                      </div>
+
+                      <div class="lg:col-span-6">
+                        <template x-if="presets.length === 0">
+                          <button
+                            type="button"
+                            @click="addPreset"
+                            class="bg-gray-200"
+                          >
+                            Add Preset
+
+                            <span role="img">
+                              🐳
+                            </span>
+                          </button>
+                        </template>
+
+                        <template x-if="presets.length > 0">
+                          <button
+                            type="button"
+                            @click="removePreset"
+                            class="bg-gray-200"
+                          >
+                            Remove Preset
+
+                            <span role="img">
+                              👋
+                            </span>
+                          </button>
+                        </template>
+                      </div>
+                    </div>
+                  </fieldset>
+
+                  <fieldset class="p-8 bg-gray-100 border border-gray-200 rounded-lg">
+                    <div>
+                      <legend class="font-medium">
+                        <span
+                          role="img"
+                          class="mr-1.5"
+                        >
+                          🌎
+                        </span>
+
+                        Locales
+                      </legend>
+
+                      <p class="mt-1 text-sm">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                      </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
+                      <div class="lg:col-span-3">
+                        <label for="translation_lang">Language</label>
+                        <input type="text" id="translation_lang" x-model="translation.lang">
+                      </div>
+
+                      <div class="lg:col-span-3">
+                        <label for="translate_setting">Setting</label>
+                        <select id="translate_setting" x-model="translation.setting">
+                          <option value="">Please Select</option>
+                          <template x-for="(setting, index) in settings">
+                            <option :value="setting.id" x-text="setting.label"></option>
+                          </template>
+                        </select>
+                      </div>
+
+                      <div class="lg:col-span-3">
+                        <label for="translate_value">Value</label>
+                        <input type="text" id="translate_value" x-model="translation.value">
+                      </div>
+
+                      <div class="lg:col-span-6">
+                        <button
+                          type="button"
+                          @click="addTranslation"
+                          class="bg-gray-200"
+                        >
+                          Add Translation
+
+                          <span role="img">
+                            🗣
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+
             <div class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
               <div class="space-y-8">
                 <div>
@@ -651,25 +785,23 @@
           settings: [],
         },
 
-        // presets: {
-          // name: 'Slider',
-          // settings: { title: 'Slider' },
-          // blocks: { type: 'slide' }
-        // },
+        presets: [],
 
-        // default: {
-          // name: 'Slider',
-          // settings: { title: 'Slider' },
-          // blocks: { type: 'slide' }
-        // },
+        preset: {
+          name: '',
+          settings: [],
+          blocks: []
+        },
 
-        // locales: {
-        //   en: { title: "Slideshow" },
-        //   fr: { title: "Diaporama" }
-        // },
+        locales: {},
+
+        translation: {
+          lang: '',
+          setting: '',
+          value: '',
+        },
 
         target: '',
-
         data: '',
 
         addSetting() {
@@ -774,6 +906,46 @@
           this.blocks.splice(index, 1);
         },
 
+        addPreset() {
+          let preset = Object.assign({}, this.preset)
+
+          Object.keys(preset).forEach(key => {
+            if (preset[key].length === 0) {
+              delete preset[key]
+            }
+          })
+
+          this.presets.push(this.preset)
+
+          this.preset = {
+            name: '',
+            settings: [],
+            blocks: []
+          }
+        },
+
+        removePreset() {
+          this.presets.pop()
+        },
+
+        addTranslation() {
+          let translation = Object.assign({}, this.translation)
+
+          if (!this.locales[translation.lang]) {
+            this.locales[translation.lang] = {}
+          }
+
+          let locale = this.locales[translation.lang]
+
+          locale[translation.setting] = translation.value
+
+          this.translation = {
+            name: '',
+            setting: '',
+            value: '',
+          }
+        },
+
         createSection() {
           let data = {
             name: this.details.name,
@@ -782,6 +954,8 @@
             max_blocks: this.details.max_blocks,
             settings: this.settings,
             blocks: this.blocks,
+            presets: this.presets,
+            locales: this.locales,
           }
 
           Object.keys(data).forEach(key => {
