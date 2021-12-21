@@ -546,6 +546,100 @@
               <div class="space-y-8">
                 <div>
                   <p class="font-medium">
+                    Settings
+                  </p>
+
+                  <template x-if="settings.length === 0">
+                    <p class="mt-1 text-sm text-gray-500">
+                      Nothing to see here... Let's add a setting!
+
+                      <span role="img">
+                        💪
+                      </span>
+                    </p>
+                  </template>
+
+                  <ul class="mt-4 space-y-4">
+                    <template x-for="(setting, index) in settings">
+                      <li
+                        x-data="{ show: false }"
+                        class="px-3 py-1.5 rounded bg-gray-50"
+                      >
+                        <div class="flex items-center justify-between">
+                          <span
+                            x-text="setting.label"
+                            class="text-xs font-medium"
+                          >
+                          </span>
+
+                          <div class="flex items-center space-x-1.5">
+                            <button
+                              type="button"
+                              @click="show = !show"
+                              class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                            >
+                              Manage
+                            </button>
+
+                            <button
+                              type="button"
+                              @click="removeSetting(index)"
+                              class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+
+                        <div
+                          x-show="show"
+                          class="mt-4 space-y-4"
+                        >
+                          <div class="p-4 bg-gray-100 border border-gray-200 rounded">
+                            <label>
+                              Move
+                            </label>
+
+                            <select @change="moveSetting(index, 'settings', $event.target.value)">
+                              <option value="">Please Select</option>
+                              <template x-for="block in blocks">
+                                <option :value="block.name" x-text="block.name"></option>
+                              </template>
+                            </select>
+                          </div>
+
+                          <div class="p-4 bg-gray-100 border border-gray-200 rounded">
+                            <p class="text-sm font-medium">
+                              Locales
+                            </p>
+
+                            <ul class="mt-1.5 space-y-1.5">
+                              <template x-for="(translation, lang) in filteredTranslations(setting.id)">
+                                <li class="flex items-center justify-between">
+                                  <p class="text-xs font-medium">
+                                    <span x-text="lang"></span>:
+                                    <span x-text="translation[setting.id]"></span>
+                                  </p>
+
+                                  <button
+                                    type="button"
+                                    @click="removeTranslation(lang, setting.id)"
+                                    class="px-1.5 py-1 text-xs bg-gray-100 rounded"
+                                  >
+                                    Remove
+                                  </button>
+                                </li>
+                              </template>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+
+                <div>
+                  <p class="font-medium">
                     Blocks
                   </p>
 
@@ -630,69 +724,6 @@
                             </ul>
                           </div>
                         </template>
-                      </li>
-                    </template>
-                  </ul>
-                </div>
-
-                <div>
-                  <p class="font-medium">
-                    Settings
-                  </p>
-
-                  <template x-if="settings.length === 0">
-                    <p class="mt-1 text-sm text-gray-500">
-                      Nothing to see here... Let's add a setting!
-
-                      <span role="img">
-                        💪
-                      </span>
-                    </p>
-                  </template>
-
-                  <ul class="mt-4 space-y-4">
-                    <template x-for="(setting, index) in settings">
-                      <li
-                        x-data="{ show: false }"
-                        class="px-3 py-1.5 rounded bg-gray-50"
-                      >
-                        <div class="flex items-center justify-between">
-                          <span
-                            x-text="setting.label"
-                            class="text-xs font-medium"
-                          >
-                          </span>
-
-                          <div class="flex items-center space-x-1.5">
-                            <button
-                              type="button"
-                              @click="show = !show"
-                              class="px-1.5 py-1 text-xs bg-gray-100 rounded"
-                            >
-                              Move
-                            </button>
-
-                            <button
-                              type="button"
-                              @click="removeSetting(index)"
-                              class="px-1.5 py-1 text-xs bg-gray-100 rounded"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-
-                        <div
-                          x-show="show"
-                          class="mt-1.5"
-                        >
-                          <select @change="moveSetting(index, 'settings', $event.target.value)">
-                            <option value="">Please Select</option>
-                            <template x-for="block in blocks">
-                              <option :value="block.name" x-text="block.name"></option>
-                            </template>
-                          </select>
-                        </div>
                       </li>
                     </template>
                   </ul>
@@ -946,6 +977,12 @@
           }
         },
 
+        removeTranslation(key, id) {
+          let locale = this.locales[key]
+
+          delete locale[id]
+        },
+
         createSection() {
           let data = {
             name: this.details.name,
@@ -963,6 +1000,18 @@
           })
 
           this.data = data
+        },
+
+        filteredTranslations(id) {
+          let settingTranslations = Object.entries(this.locales).reduce((acc, [key, value]) => {
+            if (Object.keys(value).includes(id)) {
+              acc[key] = value
+            }
+
+            return acc
+          }, {})
+
+          return settingTranslations
         },
 
         copyToClipboard() {
