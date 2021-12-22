@@ -12,6 +12,7 @@
 
   <link rel="stylesheet" href="build.css">
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 </head>
 
 <body class="relative antialiased">
@@ -518,29 +519,53 @@
 
                     <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                       <div class="lg:col-span-3">
-                        <label for="translation_lang">Language</label>
-                        <input type="text" id="translation_lang" x-model="translation.lang">
+                        <label for="translation_lang">
+                          Language
+                        </label>
+
+                        <input
+                          type="text"
+                          id="translation_lang"
+                          x-model="$store.locales.item.lang"
+                        >
                       </div>
 
                       <div class="lg:col-span-3">
-                        <label for="translate_setting">Setting</label>
-                        <select id="translate_setting" x-model="translation.setting">
-                          <option value="">Please Select</option>
+                        <label for="translate_setting">
+                          Setting
+                        </label>
+
+                        <select
+                          id="translate_setting"
+                          x-model="$store.locales.item.setting"
+                        >
+                          <option>Please Select</option>
+
                           <template x-for="setting in allSettings">
-                            <option :value="setting.id" x-text="setting.label"></option>
+                            <option
+                              :value="setting.id"
+                              x-text="setting.label"
+                            ></option>
                           </template>
                         </select>
                       </div>
 
                       <div class="lg:col-span-3">
-                        <label for="translate_value">Value</label>
-                        <input type="text" id="translate_value" x-model="translation.value">
+                        <label for="translate_value">
+                          Value
+                        </label>
+
+                        <input
+                          type="text"
+                          id="translate_value"
+                          x-model="$store.locales.item.value"
+                        >
                       </div>
 
                       <div class="lg:col-span-6">
                         <button
                           type="button"
-                          @click="addTranslation"
+                          @click="$store.locales.add"
                           class="bg-gray-200"
                         >
                           Add Translation
@@ -622,29 +647,29 @@
                             </select>
                           </div>
 
-                          <template x-if="Object.keys(filteredTranslations(setting.id)).length > 0">
+                          <template x-if="$store.locales.any(setting)">
                             <div class="p-2 border border-gray-200 rounded-lg bg-gray-50">
                               <p class="text-sm font-medium">
                                 Locales
                               </p>
 
                               <ul class="mt-1.5 space-y-1.5">
-                                <template x-for="(translation, lang) in filteredTranslations(setting.id)">
+                                <template x-for="(value, key) in $store.locales.translations(setting)">
                                   <li class="flex items-center justify-between">
                                     <span
-                                      x-text="translation[setting.id]"
+                                      x-text="value[setting.id]"
                                       class="text-xs font-medium"
                                     ></span>
 
                                     <div class="flex items-center space-x-1.5">
                                       <span
-                                        x-text="lang"
+                                        x-text="key"
                                         class="px-1.5 py-1 text-xs font-medium rounded bg-blue-100"
                                       ></span>
 
                                       <button
                                         type="button"
-                                        @click="removeTranslation(lang, setting.id)"
+                                        @click="$store.locales.remove(key, setting)"
                                         class="px-1.5 py-1 text-xs bg-red-100 rounded"
                                       >
                                         Remove
@@ -742,14 +767,14 @@
                                     </select>
                                   </div>
 
-                                  <template x-if="Object.keys(filteredTranslations(setting.id)).length > 0">
+                                  <template x-if="Object.keys(filteredTranslations(setting)).length > 0">
                                     <div class="p-2 border border-gray-200 rounded-lg bg-gray-50">
                                       <p class="text-sm font-medium">
                                         Locales
                                       </p>
 
                                       <ul class="mt-1.5 space-y-1.5">
-                                        <template x-for="(translation, lang) in filteredTranslations(setting.id)">
+                                        <template x-for="(translation, lang) in filteredTranslations(setting)">
                                           <li class="flex items-center justify-between">
                                             <span
                                               x-text="translation[setting.id]"
@@ -831,6 +856,8 @@
       Alpine.data('schema', () => ({
         init() {
           this.createSection()
+
+          this.settings.push(this.setting)
         },
 
         details: {
@@ -1010,32 +1037,9 @@
           this.presets.pop()
         },
 
-        addTranslation() {
-          let translation = Object.assign({}, this.translation)
-
-          if (!this.locales[translation.lang]) {
-            this.locales[translation.lang] = {}
-          }
-
-          let locale = this.locales[translation.lang]
-
-          locale[translation.setting] = translation.value
-
-          this.translation = {
-            name: '',
-            setting: '',
-            value: '',
-          }
-        },
-
-        removeTranslation(key, id) {
-          let locale = this.locales[key]
-
-          delete locale[id]
-        },
-
         createSection() {
-          const { name, class: className, max_blocks, tag } = Alpine.store('details')
+          const { name, tag, max_blocks, class: className, } = Alpine.store('details')
+          const { items: locales } = Alpine.store('locales')
 
           let data = {
             name,
@@ -1045,7 +1049,7 @@
             settings: this.settings,
             blocks: this.blocks,
             presets: this.presets,
-            locales: this.locales,
+            locales
           }
 
           Object.keys(data).forEach(key => {
@@ -1145,36 +1149,94 @@
     })
   </script>
 
-<script>
-  // Options
+  <script>
+    // Options
 
-  const DEFAULT_OPTION = {
-    value: '',
-    label: '',
-    group: '',
-  }
+    const DEFAULT_OPTION = {
+      value: '',
+      label: '',
+      group: '',
+    }
 
-  document.addEventListener('alpine:init', () => {
-    Alpine.store('options', {
-      items: [],
-      item: {...DEFAULT_OPTION},
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('options', {
+        items: [],
+        item: {...DEFAULT_OPTION},
 
-      add() {
-        const self = Alpine.store('options')
-        const newArray = this.items && [...self.items, self.item] || [self.item]
+        add() {
+          const newItems = this.items && [...self.items, self.item] || [self.item]
 
-        self.items = newArray
-      },
+          self.items = newItems
+        },
 
-      remove(index) {
-        const self = Alpine.store('options')
-        const newArray = self.items.filter((item, itemIndex) => itemIndex !== index)
+        remove(index) {
+          const newItems = self.items.filter((item, itemIndex) => itemIndex !== index)
 
-        self.items = newArray
-        self.item = {...DEFAULT_OPTION}
-      },
+          self.items = newItems
+          self.item = {...DEFAULT_OPTION}
+        },
+      })
+
+      const self = Alpine.store('options')
     })
-  })
-</script>
+  </script>
+
+  <script>
+    // Locales
+
+    // This is by far the most complicated store in the whole project
+    // don't be put off, keep pushing through 💪
+
+    const DEFAULT_TRANSLATION = {
+      lang: '',
+      value: '',
+      setting: '',
+    }
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('locales', {
+        items: [],
+        item: { ...DEFAULT_TRANSLATION },
+
+        add() {
+          const { lang, setting, value } = self.item
+          const locale = self.items[lang] || {}
+          const newLocale = { ...locale, [setting]: value }
+
+          self.items = { ...self.items, [lang]: newLocale }
+          self.item = { ...DEFAULT_TRANSLATION }
+        },
+
+        remove(key, setting) {
+          const { id } = setting
+          const locale = self.items[key]
+          const newLocale = _.pickBy(locale, (value, key) => key !== id)
+
+          let newItems = { ...self.items, [key]: newLocale }
+
+          newItems = _.keys(newLocale).length === 0 && _.omit(self.items, key)
+
+          self.items = newItems
+        },
+
+        translations(setting) {
+          const { id } = setting
+          const keys = _.keys(self.items)
+          const translations = _.pick(self.items, [...keys, id])
+
+          return translations
+        },
+
+        any(setting) {
+          const { id } = setting
+          const translations = self.translations(id)
+
+          return _.keys(translations).length > 0
+        }
+      })
+
+      const self = Alpine.store('locales')
+    })
+  </script>
 </body>
 </html>
