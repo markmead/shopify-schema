@@ -24,7 +24,7 @@
           </h1>
 
           <p class="mt-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos iste magnam doloribus atque rerum. Optio, quam ipsam magni nam est quisquam quasi ipsa explicabo soluta qui, at fugiat nisi quae?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius omnis exercitationem minus obcaecati suscipit culpa earum ea consequuntur atque dolores, dolorem esse aspernatur, tenetur nesciunt vel optio quibusdam explicabo debitis!
           </p>
         </div>
       </section>
@@ -51,25 +51,25 @@
                   Details
                 </legend>
 
-                <p class="mt-1 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                <p class="mt-1 text-sm max-w-[40ch]">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio laudantium eaque quibusdam, obcaecati sint sunt.
                 </p>
               </div>
 
               <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
                 <div class="lg:col-span-3">
                   <label for="details_name">Name</label>
-                  <input type="text" id="details_name" x-model="details.name" @input="createSection">
+                  <input type="text" id="details_name" x-model="$store.details.name" @input="createSection">
                 </div>
 
                 <div class="lg:col-span-3">
                   <label for="details_class">Class</label>
-                  <input type="text" id="details_class" x-model="details.class" @input="createSection">
+                  <input type="text" id="details_class" x-model="$store.details.class" @input="createSection">
                 </div>
 
                 <div class="lg:col-span-2">
                   <label for="details_tag">Tag</label>
-                  <select id="details_tag" x-model="details.tag" @change="createSection">
+                  <select id="details_tag" x-model="$store.details.tag" @change="createSection">
                     <option value="div">div</option>
                     <option value="section">section</option>
                     <option value="header">header</option>
@@ -81,7 +81,7 @@
 
                 <div class="lg:col-span-2">
                   <label for="details_max_blocks">Max Blocks</label>
-                  <input type="number" id="details_max_blocks" x-model="details.max_blocks" @input="createSection">
+                  <input type="number" id="details_max_blocks" x-model="$store.details.max_blocks" @input="createSection">
                 </div>
               </div>
             </fieldset>
@@ -99,8 +99,8 @@
                   Settings
                 </legend>
 
-                <p class="mt-1 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                <p class="max-w-[40ch] mt-1 text-sm">
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, quod beatae voluptates possimus recusandae dolor!
                 </p>
               </div>
 
@@ -274,34 +274,49 @@
                     <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                       <div class="lg:col-span-3">
                         <label for="option_label">Label</label>
-                        <input type="text" id="option_label" x-model="option.label">
+
+                        <input
+                          type="text"
+                          id="option_label"
+                          x-model="$store.options.item.label"
+                        >
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="option_value">Value</label>
-                        <input type="text" id="option_value" x-model="option.value">
+
+                        <input
+                          type="text"
+                          id="option_value"
+                          x-model="$store.options.item.value"
+                        >
                       </div>
 
                       <template x-if="setting.type === 'select'">
                         <div class="lg:col-span-3">
                           <label for="option_group">Group</label>
-                          <input type="text" id="option_group" x-model="option.group">
+
+                          <input
+                            type="text"
+                            id="option_group"
+                            x-model="$store.options.item.group"
+                          >
                         </div>
                       </template>
                     </div>
 
-                    <template x-if="setting.options.length > 0">
+                    <template x-if="$store.options.items.length > 0">
                       <div class="flow-root mt-4">
                         <ul class="flex flex-wrap -m-1">
-                          <template x-for="(option, index) in setting.options">
+                          <template x-for="(option, index) in $store.options.items">
                             <li class="p-1">
                               <strong class="inline-flex items-center px-3 py-1 bg-gray-100 border border-gray-200 rounded-full">
                                 <span class="text-xs font-medium" x-text="option.label"></span>
 
                                 <button
                                   type="button"
-                                  @click="removeOption(index)"
                                   class="w-5 h-5 p-0 rounded-full"
+                                  @click="$store.options.remove(index)"
                                 >
                                   <span role="img" class="ml-0">
                                     🗑
@@ -316,8 +331,8 @@
 
                     <button
                       type="button"
-                      @click="addOption"
                       class="mt-4 bg-gray-200"
+                      @click="$store.options.add"
                     >
                       Add Option
 
@@ -370,8 +385,8 @@
                   Blocks
                 </legend>
 
-                <p class="mt-1 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                <p class="mt-1 text-sm max-w-[40ch]">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error tempora ea quo doloremque aperiam ad!
                 </p>
               </div>
 
@@ -421,7 +436,7 @@
                     Enhanced Features
                   </p>
 
-                  <p class="mt-1 text-sm">
+                  <p class="mt-1 text-sm max-w-[40ch]">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
                   </p>
                 </div>
@@ -440,7 +455,7 @@
                         Presets
                       </legend>
 
-                      <p class="mt-1 text-sm">
+                      <p class="mt-1 text-sm max-w-[40ch]">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
                       </p>
                     </div>
@@ -496,7 +511,7 @@
                         Locales
                       </legend>
 
-                      <p class="mt-1 text-sm">
+                      <p class="mt-1 text-sm max-w-[40ch]">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
                       </p>
                     </div>
@@ -879,6 +894,9 @@
         addSetting() {
           let target = this.target
           let setting = Object.assign({}, this.setting)
+          let options = Alpine.store('options').items
+
+          setting.options = options || []
 
           Object.keys(setting).forEach(key => {
             if (setting[key].length === 0) {
@@ -942,20 +960,6 @@
 
             this.settings.splice(index, 1)
           }
-        },
-
-        addOption() {
-          this.setting.options.push(this.option);
-
-          this.option = {
-            value: '',
-            label: '',
-            group: '',
-          };
-        },
-
-        removeOption(index) {
-          this.setting.options.splice(index, 1);
         },
 
         addBlock() {
@@ -1031,11 +1035,13 @@
         },
 
         createSection() {
+          const { name, class: className, max_blocks, tag } = Alpine.store('details')
+
           let data = {
-            name: this.details.name,
-            tag: this.details.tag,
-            class: this.details.class,
-            max_blocks: this.details.max_blocks,
+            name,
+            tag,
+            max_blocks,
+            class: className,
             settings: this.settings,
             blocks: this.blocks,
             presets: this.presets,
@@ -1125,5 +1131,50 @@
       }))
     })
   </script>
+
+  <script>
+    // Details
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('details', {
+        name: '',
+        tag: 'section',
+        max_blocks: '',
+        class: '',
+      })
+    })
+  </script>
+
+<script>
+  // Options
+
+  const DEFAULT_OPTION = {
+    value: '',
+    label: '',
+    group: '',
+  }
+
+  document.addEventListener('alpine:init', () => {
+    Alpine.store('options', {
+      items: [],
+      item: {...DEFAULT_OPTION},
+
+      add() {
+        const self = Alpine.store('options')
+        const newArray = this.items && [...self.items, self.item] || [self.item]
+
+        self.items = newArray
+      },
+
+      remove(index) {
+        const self = Alpine.store('options')
+        const newArray = self.items.filter((item, itemIndex) => itemIndex !== index)
+
+        self.items = newArray
+        self.item = {...DEFAULT_OPTION}
+      },
+    })
+  })
+</script>
 </body>
 </html>
