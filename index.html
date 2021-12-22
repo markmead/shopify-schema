@@ -90,18 +90,16 @@
             <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
               <div>
                 <legend class="font-medium">
-                  <span
-                    role="img"
-                    class="mr-1.5"
-                  >
-                    ⚙️
+                  <span role="img" class="mr-1.5">
+                    🐙
                   </span>
 
                   Settings
                 </legend>
 
                 <p class="max-w-[40ch] mt-1 text-sm">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Non, quod beatae voluptates possimus recusandae dolor!
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  Non, quod beatae voluptates possimus recusandae dolor!
                 </p>
               </div>
 
@@ -109,13 +107,13 @@
                 <template x-if="shouldShow('id')">
                   <div class="lg:col-span-3">
                     <label for="setting_id">ID</label>
-                    <input type="text" id="setting_id" x-model="setting.id">
+                    <input type="text" id="setting_id" x-model="$store.settings.item.id">
                   </div>
                 </template>
 
                 <div class="lg:col-span-3">
                   <label for="setting_type">Type</label>
-                  <select id="setting_type" x-model="setting.type">
+                  <select id="setting_type" x-model="$store.settings.item.type">
                     <option value="text">text</option>
                     <option value="textarea">textarea</option>
                     <option value="number">number</option>
@@ -141,31 +139,31 @@
                 <template x-if="shouldShow('label')">
                   <div class="lg:col-span-3">
                     <label for="setting_label">Label</label>
-                    <input type="text" id="setting_label" x-model="setting.label">
+                    <input type="text" id="setting_label" x-model="$store.settings.item.label">
                   </div>
                 </template>
 
                 <template x-if="shouldShow('placeholder')">
                   <div class="lg:col-span-3">
                     <label for="setting_placeholder">Placeholder</label>
-                    <input type="text" id="setting_placeholder" x-model="setting.placeholder">
+                    <input type="text" id="setting_placeholder" x-model="$store.settings.item.placeholder">
                   </div>
                 </template>
 
                 <template x-if="shouldShow('content')">
                   <div class="lg:col-span-3">
                     <label for="setting_content">Content</label>
-                    <input type="text" id="setting_content" x-model="setting.content">
+                    <input type="text" id="setting_content" x-model="$store.settings.item.content">
                   </div>
                 </template>
 
                 <template x-if="shouldShow('default')">
                   <div class="lg:col-span-6">
                     <label for="setting_default">Default</label>
-                    <textarea id="setting_default" rows="4" x-model="setting.default">
+                    <textarea id="setting_default" rows="4" x-model="$store.settings.item.default">
                     </textarea>
 
-                    <template x-if="setting.type === 'html'">
+                    <template x-if="$store.settings.item.type === 'html'">
                       <p class="mt-1 text-sm text-gray-500">
                         <span role="img">
                           💡
@@ -175,7 +173,7 @@
                       </p>
                     </template>
 
-                    <template x-if="setting.type === 'liquid'">
+                    <template x-if="$store.settings.item.type === 'liquid'">
                       <p class="mt-1 text-sm text-gray-500">
                         <span role="img">
                           💡
@@ -190,12 +188,12 @@
                 <template x-if="shouldShow('info')">
                   <div class="lg:col-span-6">
                     <label for="setting_info">Info</label>
-                    <textarea id="setting_info" rows="4" x-model="setting.info">
+                    <textarea id="setting_info" rows="4" x-model="$store.settings.item.info">
                     </textarea>
                   </div>
                 </template>
 
-                <template x-if="setting.type === 'video_url'">
+                <template x-if="$store.settings.item.type === 'video_url'">
                   <div class="lg:col-span-6">
                     <p class="text-sm font-medium">
                       Accept
@@ -207,7 +205,7 @@
                           for="setting_accept_vimeo"
                           class="flex items-center"
                         >
-                          <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="setting.accept">
+                          <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="$store.settings.item.accept">
 
                           <span class="ml-1.5 text-sm">
                             Vimeo
@@ -220,7 +218,7 @@
                           for="setting_accept_youtube"
                           class="flex items-center"
                         >
-                          <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="setting.accept">
+                          <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="$store.settings.item.accept">
 
                           <span class="ml-1.5 text-sm">
                             YouTube
@@ -231,7 +229,7 @@
                   </div>
                 </template>
 
-                <template x-if="setting.type === 'range'">
+                <template x-if="$store.settings.item.type === 'range'">
                   <div class="lg:col-span-6">
                     <p class="text-sm font-medium">
                       Range
@@ -240,22 +238,22 @@
                     <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                       <div class="lg:col-span-3">
                         <label for="setting_min">Min</label>
-                        <input type="number" id="setting_min" x-model="setting.min">
+                        <input type="number" id="setting_min" x-model="$store.settings.item.min">
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="setting_max">Max</label>
-                        <input type="number" id="setting_max" x-model="setting.max">
+                        <input type="number" id="setting_max" x-model="$store.settings.item.max">
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="setting_step">Step</label>
-                        <input type="number" id="setting_step" x-model="setting.step">
+                        <input type="number" id="setting_step" x-model="$store.settings.item.step">
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="setting_unit">Unit</label>
-                        <select id="setting_unit" x-model="setting.unit">
+                        <select id="setting_unit" x-model="$store.settings.item.unit">
                           <option value="px">px</option>
                           <option value="rem">rem</option>
                           <option value="em">em</option>
@@ -266,7 +264,7 @@
                   </div>
                 </template>
 
-                <template x-if="['radio', 'select'].includes(setting.type)">
+                <template x-if="['radio', 'select'].includes($store.settings.item.type)">
                   <div class="lg:col-span-6">
                     <p class="text-sm font-medium">
                       Options
@@ -349,10 +347,19 @@
                     Block
                   </label>
 
-                  <select id="target" x-model="target">
-                    <option value="">Please Select</option>
+                  <select
+                    id="target"
+                    x-model="$store.block"
+                  >
+                    <option>
+                      Please Select
+                    </option>
+
                     <template x-for="block in $store.blocks.items">
-                      <option :value="block.name" x-text="block.name"></option>
+                      <option
+                        :value="block.name"
+                        x-text="block.name"
+                      ></option>
                     </template>
                   </select>
                 </div>
@@ -360,8 +367,8 @@
                 <div class="lg:col-span-6">
                   <button
                     type="button"
-                    @click="addSetting"
                     class="bg-gray-200"
+                    @click="$store.settings.add"
                   >
                     Add Setting
 
@@ -616,7 +623,7 @@
                     Settings
                   </p>
 
-                  <template x-if="settings.length === 0">
+                  <template x-if="$store.settings.items.length === 0">
                     <p class="mt-1 text-sm text-gray-500">
                       Nothing to see here... Let's add a setting!
 
@@ -627,7 +634,7 @@
                   </template>
 
                   <ul class="mt-4 space-y-4">
-                    <template x-for="(setting, index) in settings">
+                    <template x-for="(setting, index) in $store.settings.items">
                       <li
                         x-data="{ show: false }"
                         class="p-2 bg-gray-100 border border-gray-200 rounded-lg"
@@ -642,16 +649,16 @@
                           <div class="flex items-center space-x-1.5">
                             <button
                               type="button"
-                              @click="show = !show"
                               class="px-1.5 py-1 text-xs bg-blue-100 rounded"
+                              @click="show = !show"
                             >
                               Manage
                             </button>
 
                             <button
                               type="button"
-                              @click="removeSetting(index)"
                               class="px-1.5 py-1 text-xs bg-red-100 rounded"
+                              @click="$store.settings.remove(index)"
                             >
                               Remove
                             </button>
@@ -667,9 +674,9 @@
                               Move
                             </label>
 
-                            <select @change="moveSetting(index, 'settings', $event.target.value)">
+                            <select @change="$store.settings.move(index, $event.target.value)">
                               <option value="">Please Select</option>
-                              <template x-for="block in blocks">
+                              <template x-for="block in $store.blocks.items">
                                 <option :value="block.name" x-text="block.name"></option>
                               </template>
                             </select>
@@ -719,7 +726,7 @@
                     Blocks
                   </p>
 
-                  <template x-if="blocks.length === 0">
+                  <template x-if="$store.blocks.items.length === 0">
                     <p class="mt-1 text-sm text-gray-500">
                       Nothing to see here... Let's add some blocks!
 
@@ -770,7 +777,7 @@
 
                                     <button
                                       type="button"
-                                      @click="removeSetting(index)"
+                                      @click="$store.settings.remove(index, block.name)"
                                       class="px-1.5 py-1 text-xs bg-red-100 rounded"
                                     >
                                       Remove
@@ -787,10 +794,18 @@
                                       Move
                                     </label>
 
-                                    <select @change="moveSetting(index, 'settings', $event.target.value)">
-                                      <option value="">Please Select</option>
-                                      <template x-for="block in blocks">
-                                        <option :value="block.name" x-text="block.name"></option>
+                                    <select @change="$store.settings.move(index, $event.target.value, block.name)">
+                                      <option>Please Select</option>
+                                      <option value="settings">Settings</option>
+
+                                      <template x-for="item in $store.blocks.items">
+                                        <template x-if="item.name !== block.name">
+                                          <option
+                                            :value="item.name"
+                                            x-text="item.name"
+                                          >
+                                          </option>
+                                        </template>
                                       </template>
                                     </select>
                                   </div>
@@ -841,7 +856,7 @@
 
               <div class="relative lg:col-span-2">
                 <textarea
-                  rows="20"
+                  rows="15"
                   id="textarea"
                   x-text="JSON.stringify(data, null, 2)"
                   class="block font-mono bg-white border border-gray-200 rounded-lg"
@@ -865,7 +880,7 @@
           <div class="flex justify-end mt-8">
             <button
               type="submit"
-              class="w-full text-white bg-green-600 lg:w-auto"
+              class="text-white bg-green-600"
             >
               Update Section
 
@@ -886,139 +901,29 @@
           this.updateSection()
         },
 
-        details: {
-          name: 'Shopify Section',
-          tag: 'div',
-          class: 'shopify-section',
-          max_blocks: '',
-        },
-
-        settings: [],
-
-        setting: {
-          type: 'text',
-          id: 'message',
-          label: 'Message',
-          default: '',
-          placeholder: '',
-          info: '',
-          options: [],
-          accept: [],
-          min: '',
-          max: '',
-          step: '',
-          unit: '',
-        },
-
-        blocks: [],
-
-        block: {
-          name: '',
-          type: '',
-          limit: '',
-          settings: [],
-        },
-
-        target: '',
         data: '',
-
-        addSetting() {
-          let target = this.target
-          let setting = Object.assign({}, this.setting)
-          let options = Alpine.store('options').items
-          let blocks = Alpine.store('blocks').items
-
-          setting.options = options || []
-
-          Object.keys(setting).forEach(key => {
-            if (setting[key].length === 0) {
-              delete setting[key]
-            }
-          })
-
-          if (target) {
-            let block = blocks.find(block => block.name === target)
-            let { settings } = block
-
-            let newSettings = [...settings, setting]
-
-            block.settings = newSettings
-          } else {
-            this.settings.push(setting)
-          }
-
-          this.setting = {
-            type: 'text',
-            id: 'message',
-            label: 'Message',
-            default: '',
-            placeholder: '',
-            info: '',
-            options: [],
-            accept: [],
-            min: '',
-            max: '',
-            step: '',
-            unit: '',
-          }
-
-          this.target = ''
-        },
-
-        removeSetting(index, target) {
-          let block = this.blocks.find(block => block.name === target)
-
-          if(block) {
-            block.settings.splice(index, 1)
-          } else {
-            this.settings.splice(index, 1);
-          }
-        },
-
-        moveSetting(index, name, target) {
-          if(target === 'settings') {
-            let block = this.blocks.find(block => block.name === name)
-            let setting = block.settings[index]
-
-            this.settings.push(setting)
-
-            block.settings.splice(index, 1)
-          } else {
-            let block = this.blocks.find(block => block.name === target)
-            let setting = this.settings[index]
-
-            Object.keys(this.locales).forEach(lang => {
-              delete this.locales[lang][setting.id]
-            })
-
-            block.settings.push(setting)
-
-            this.settings.splice(index, 1)
-          }
-        },
 
         updateSection() {
           const { name, tag, max_blocks, class: className, } = Alpine.store('details')
-          const { items: locales } = Alpine.store('locales')
-          const { items: presets } = Alpine.store('presets')
+          const { items: settings } = Alpine.store('settings')
           const { items: blocks } = Alpine.store('blocks')
+          const { items: presets } = Alpine.store('presets')
+          const { items: locales } = Alpine.store('locales')
 
-          let data = {
+          let schemaData = {
             name,
             tag,
             max_blocks,
             class: className,
-            settings: this.settings,
+            settings,
             blocks,
             presets,
             locales
           }
 
-          Object.keys(data).forEach(key => {
-            data[key] === '' && delete data[key]
-          })
+          schemaData = _.omitBy(schemaData, _.isEmpty)
 
-          this.data = data
+          this.data = schemaData
         },
 
         allSettings() {
@@ -1094,8 +999,91 @@
         max_blocks: '',
         tag: 'section',
         name: 'Shopify Section',
-        class: 'shopify-section',
+        class: 'shopify-section'
       })
+    })
+  </script>
+
+  <script>
+    // Settings
+
+    const DEFAULT_SETTING = {
+      id: 'message',
+      type: 'text',
+      label: 'Message',
+      default: '',
+      placeholder: '',
+      info: '',
+      min: '',
+      max: '',
+      step: '',
+      unit: '',
+      options: [],
+      accept: [],
+    }
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('settings', {
+        items: [],
+        item: { ...DEFAULT_SETTING },
+
+        add() {
+          const options = Alpine.store('options').items
+          const blocks = Alpine.store('blocks').items
+          const selectedBlock = Alpine.store('block')
+          const setting = _.omitBy(self.item, _.isEmpty)
+          const newSetting = options.length > 0 && { ...setting, options: [...options] } || { ...setting }
+
+          if (selectedBlock) {
+            const block = blocks.find((item) => item.name === selectedBlock)
+            const { settings: blockSettings } = block
+            const newBlockSettings = blockSettings.length > 0 && [...blockSettings, setting] || [setting]
+
+            block.settings = newBlockSettings
+
+            Alpine.store('block', '')
+          } else {
+            self.items = [...self.items, newSetting]
+          }
+
+          self.item = { ...DEFAULT_SETTING }
+        },
+
+        remove(index, block) {
+          const blocks = Alpine.store('blocks').items
+
+          if (block) {
+            const selectedBlock = blocks.find(item => item.name === block)
+            const newBlockSettings = selectedBlock.settings.filter((item, itemIndex) => itemIndex !== index)
+
+            selectedBlock.settings = newBlockSettings
+          } else {
+            const newSettings = self.items.filter((item, itemIndex) => itemIndex !== index)
+            self.items = newSettings
+          }
+        },
+
+        move(index, name, block) {
+          const blocks = Alpine.store('blocks').items
+          const isSettings = name === 'settings'
+
+          if (isSettings) {
+            const currentBlock = blocks.find(item => item.name === block)
+            const currentSetting = currentBlock.settings[index]
+
+            self.items = [...self.items, currentSetting]
+            currentBlock.settings = currentBlock.settings.filter((item, itemIndex) => itemIndex !== index)
+          } else {
+            const currentSetting = self.settings.items[index]
+            const newSetting = _.omitBy(currentSetting, _.isEmpty)
+
+            block.settings = [...block.settings, newSetting]
+            self.items = self.items.filter((item, itemIndex) => itemIndex !== index)
+          }
+        },
+      })
+
+      const self = Alpine.store('settings')
     })
   </script>
 
@@ -1150,7 +1138,7 @@
 
           if (types.includes(type)) return
 
-          const block = _.omitBy(self.item, _.isNil)
+          const block = _.omitBy(self.item, _.isEmpty)
           const newItems = self.items && [...self.items, block] || [block]
 
           self.items = newItems
@@ -1158,13 +1146,21 @@
         },
 
         remove(index) {
-          const newItems = self.items.filter((item, itemIndex) => itemIndex !== index)
+          const newItems = _.find(self.items, [], [index])
 
           self.items = newItems
         },
       })
 
       const self = Alpine.store('blocks')
+    })
+  </script>
+
+  <script>
+    // Block
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('block', '')
     })
   </script>
 
