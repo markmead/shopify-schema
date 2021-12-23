@@ -623,7 +623,7 @@
                     Settings
                   </p>
 
-                  <template x-if="$store.settings.items.length === 0">
+                  <template x-if="!$store.settings.items || $store.settings.items.length === 0">
                     <p class="mt-1 text-sm text-gray-500">
                       Nothing to see here... Let's add a setting!
 
@@ -726,7 +726,7 @@
                     Blocks
                   </p>
 
-                  <template x-if="$store.blocks.items.length === 0">
+                  <template x-if="!$store.blocks.items || $store.blocks.items.length === 0">
                     <p class="mt-1 text-sm text-gray-500">
                       Nothing to see here... Let's add some blocks!
 
@@ -927,9 +927,11 @@
         },
 
         allSettings() {
-          let blockSettings = this.blocks.flatMap((block) => block.settings)
+          const { items: settings } = Alpine.store('settings')
+          const { items: blocks } = Alpine.store('blocks')
+          const blockSettings = _.flatMap(blocks, (block) => block.settings)
 
-          return [...this.settings, ...blockSettings]
+          return [...settings, ...blockSettings]
         },
 
         copyToClipboard() {
@@ -940,7 +942,8 @@
         },
 
         shouldShow(input) {
-          let type = this.setting.type
+          const { item: setting } = Alpine.store('settings')
+          const { type } = setting
           let base = ['id', 'label', 'info']
           let show = []
 
@@ -1031,11 +1034,11 @@
           const options = Alpine.store('options').items
           const blocks = Alpine.store('blocks').items
           const selectedBlock = Alpine.store('block')
-          const setting = _.omitBy(self.item, _.isEmpty)
+          const setting = self.item
           const newSetting = options.length > 0 && { ...setting, options: [...options] } || { ...setting }
 
           if (selectedBlock) {
-            const block = blocks.find((item) => item.name === selectedBlock)
+            const block = _.find(blocks, { name: selectedBlock })
             const { settings: blockSettings } = block
             const newBlockSettings = blockSettings.length > 0 && [...blockSettings, setting] || [setting]
 
@@ -1053,32 +1056,31 @@
           const blocks = Alpine.store('blocks').items
 
           if (block) {
-            const selectedBlock = blocks.find(item => item.name === block)
-            const newBlockSettings = selectedBlock.settings.filter((item, itemIndex) => itemIndex !== index)
+            const currentBlock = _.find(blocks, { 'name': block })
+            const newBlockSettings = _.filter(currentBlock.settings, (item, itemIndex) => itemIndex !== index)
 
-            selectedBlock.settings = newBlockSettings
+            currentBlock.settings = newBlockSettings
           } else {
-            const newSettings = self.items.filter((item, itemIndex) => itemIndex !== index)
+            const newSettings = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
             self.items = newSettings
           }
         },
 
         move(index, name, block) {
           const blocks = Alpine.store('blocks').items
+          const currentBlock = _.find(blocks, { name: block })
           const isSettings = name === 'settings'
 
           if (isSettings) {
-            const currentBlock = blocks.find(item => item.name === block)
             const currentSetting = currentBlock.settings[index]
 
             self.items = [...self.items, currentSetting]
-            currentBlock.settings = currentBlock.settings.filter((item, itemIndex) => itemIndex !== index)
+            currentBlock.settings = _.filter(currentBlock.settings, (item, itemIndex) => itemIndex !== index)
           } else {
-            const currentSetting = self.settings.items[index]
-            const newSetting = _.omitBy(currentSetting, _.isEmpty)
+            const currentSetting = self.items[index]
 
-            block.settings = [...block.settings, newSetting]
-            self.items = self.items.filter((item, itemIndex) => itemIndex !== index)
+            currentBlock.settings = [...currentBlock.settings, currentSetting]
+            self.items = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
           }
         },
       })
@@ -1109,7 +1111,7 @@
         },
 
         remove(index) {
-          const newItems = self.items.filter((item, itemIndex) => itemIndex !== index)
+          const newItems = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
 
           self.items = newItems
         },
@@ -1138,7 +1140,7 @@
 
           if (types.includes(type)) return
 
-          const block = _.omitBy(self.item, _.isEmpty)
+          const block = self.item
           const newItems = self.items && [...self.items, block] || [block]
 
           self.items = newItems
