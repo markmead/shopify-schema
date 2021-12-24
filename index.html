@@ -12,6 +12,7 @@
 
   <link rel="stylesheet" href="build.css">
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 </head>
 
 <body class="relative antialiased">
@@ -24,17 +25,17 @@
           </h1>
 
           <p class="mt-4">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos iste magnam doloribus atque rerum. Optio, quam ipsam magni nam est quisquam quasi ipsa explicabo soluta qui, at fugiat nisi quae?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius omnis exercitationem minus obcaecati suscipit culpa earum ea consequuntur atque dolores, dolorem esse aspernatur, tenetur nesciunt vel optio quibusdam explicabo debitis!
           </p>
         </div>
       </section>
 
       <section
-        x-data="schema"
+        x-data
         class="p-8 mt-8 border border-gray-100 bg-gray-50 rounded-3xl"
       >
         <form
-          @submit.prevent="createSection"
+          @submit.prevent="$store.schema.update"
           class="flow-root"
         >
           <div class="-my-8 divide-y divide-gray-100">
@@ -51,25 +52,48 @@
                   Details
                 </legend>
 
-                <p class="mt-1 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                <p class="mt-1 text-sm max-w-[40ch]">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio laudantium eaque quibusdam, obcaecati sint sunt.
                 </p>
               </div>
 
               <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
                 <div class="lg:col-span-3">
-                  <label for="details_name">Name</label>
-                  <input type="text" id="details_name" x-model="details.name" @input="createSection">
+                  <label for="details_name">
+                    Name
+                  </label>
+
+                  <input
+                    type="text"
+                    id="details_name"
+                    x-model="$store.details.name"
+                    @input="$store.schema.update"
+                  >
                 </div>
 
                 <div class="lg:col-span-3">
-                  <label for="details_class">Class</label>
-                  <input type="text" id="details_class" x-model="details.class" @input="createSection">
+                  <label for="details_class">
+                    Class
+                  </label>
+
+                  <input
+                    type="text"
+                    id="details_class"
+                    x-model="$store.details.class"
+                    @input="$store.schema.update"
+                  >
                 </div>
 
                 <div class="lg:col-span-2">
-                  <label for="details_tag">Tag</label>
-                  <select id="details_tag" x-model="details.tag" @change="createSection">
+                  <label for="details_tag">
+                    Tag
+                  </label>
+
+                  <select
+                    id="details_tag"
+                    x-model="$store.details.tag"
+                    @change="$store.schema.update"
+                  >
                     <option value="div">div</option>
                     <option value="section">section</option>
                     <option value="header">header</option>
@@ -80,8 +104,16 @@
                 </div>
 
                 <div class="lg:col-span-2">
-                  <label for="details_max_blocks">Max Blocks</label>
-                  <input type="number" id="details_max_blocks" x-model="details.max_blocks" @input="createSection">
+                  <label for="details_max_blocks">
+                    Max Blocks
+                  </label>
+
+                  <input
+                    type="number"
+                    id="details_max_blocks"
+                    x-model="$store.details.max_blocks"
+                    @input="$store.schema.update"
+                  >
                 </div>
               </div>
             </fieldset>
@@ -89,35 +121,34 @@
             <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
               <div>
                 <legend class="font-medium">
-                  <span
-                    role="img"
-                    class="mr-1.5"
-                  >
-                    ⚙️
+                  <span role="img" class="mr-1.5">
+                    🐙
                   </span>
 
                   Settings
                 </legend>
 
-                <p class="mt-1 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                <p class="max-w-[40ch] mt-1 text-sm">
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  Non, quod beatae voluptates possimus recusandae dolor!
                 </p>
               </div>
 
               <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
-                <template x-if="shouldShow('id')">
+                <template x-if="$store.schema.show('id')">
                   <div class="lg:col-span-3">
                     <label for="setting_id">ID</label>
-                    <input type="text" id="setting_id" x-model="setting.id">
+                    <input type="text" id="setting_id" x-model="$store.settings.item.id">
                   </div>
                 </template>
 
                 <div class="lg:col-span-3">
                   <label for="setting_type">Type</label>
-                  <select id="setting_type" x-model="setting.type">
+                  <select id="setting_type" x-model="$store.settings.item.type">
                     <option value="text">text</option>
                     <option value="textarea">textarea</option>
                     <option value="number">number</option>
+                    <option value="checkbox">checkbox</option>
                     <option value="radio">radio</option>
                     <option value="range">range</option>
                     <option value="select">select</option>
@@ -137,34 +168,34 @@
                   </select>
                 </div>
 
-                <template x-if="shouldShow('label')">
+                <template x-if="$store.schema.show('label')">
                   <div class="lg:col-span-3">
                     <label for="setting_label">Label</label>
-                    <input type="text" id="setting_label" x-model="setting.label">
+                    <input type="text" id="setting_label" x-model="$store.settings.item.label">
                   </div>
                 </template>
 
-                <template x-if="shouldShow('placeholder')">
+                <template x-if="$store.schema.show('placeholder')">
                   <div class="lg:col-span-3">
                     <label for="setting_placeholder">Placeholder</label>
-                    <input type="text" id="setting_placeholder" x-model="setting.placeholder">
+                    <input type="text" id="setting_placeholder" x-model="$store.settings.item.placeholder">
                   </div>
                 </template>
 
-                <template x-if="shouldShow('content')">
+                <template x-if="$store.schema.show('content')">
                   <div class="lg:col-span-3">
                     <label for="setting_content">Content</label>
-                    <input type="text" id="setting_content" x-model="setting.content">
+                    <input type="text" id="setting_content" x-model="$store.settings.item.content">
                   </div>
                 </template>
 
-                <template x-if="shouldShow('default')">
+                <template x-if="$store.schema.show('default')">
                   <div class="lg:col-span-6">
                     <label for="setting_default">Default</label>
-                    <textarea id="setting_default" rows="4" x-model="setting.default">
+                    <textarea id="setting_default" rows="4" x-model="$store.settings.item.default">
                     </textarea>
 
-                    <template x-if="setting.type === 'html'">
+                    <template x-if="$store.settings.item.type === 'html'">
                       <p class="mt-1 text-sm text-gray-500">
                         <span role="img">
                           💡
@@ -174,7 +205,7 @@
                       </p>
                     </template>
 
-                    <template x-if="setting.type === 'liquid'">
+                    <template x-if="$store.settings.item.type === 'liquid'">
                       <p class="mt-1 text-sm text-gray-500">
                         <span role="img">
                           💡
@@ -186,15 +217,15 @@
                   </div>
                 </template>
 
-                <template x-if="shouldShow('info')">
+                <template x-if="$store.schema.show('info')">
                   <div class="lg:col-span-6">
                     <label for="setting_info">Info</label>
-                    <textarea id="setting_info" rows="4" x-model="setting.info">
+                    <textarea id="setting_info" rows="4" x-model="$store.settings.item.info">
                     </textarea>
                   </div>
                 </template>
 
-                <template x-if="setting.type === 'video_url'">
+                <template x-if="$store.settings.item.type === 'video_url'">
                   <div class="lg:col-span-6">
                     <p class="text-sm font-medium">
                       Accept
@@ -206,7 +237,7 @@
                           for="setting_accept_vimeo"
                           class="flex items-center"
                         >
-                          <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="setting.accept">
+                          <input id="setting_accept_vimeo" type="checkbox" value="vimeo" x-model="$store.settings.item.accept">
 
                           <span class="ml-1.5 text-sm">
                             Vimeo
@@ -219,7 +250,7 @@
                           for="setting_accept_youtube"
                           class="flex items-center"
                         >
-                          <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="setting.accept">
+                          <input id="setting_accept_youtube" type="checkbox" value="youtube" x-model="$store.settings.item.accept">
 
                           <span class="ml-1.5 text-sm">
                             YouTube
@@ -230,7 +261,7 @@
                   </div>
                 </template>
 
-                <template x-if="setting.type === 'range'">
+                <template x-if="$store.settings.item.type === 'range'">
                   <div class="lg:col-span-6">
                     <p class="text-sm font-medium">
                       Range
@@ -239,22 +270,22 @@
                     <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                       <div class="lg:col-span-3">
                         <label for="setting_min">Min</label>
-                        <input type="number" id="setting_min" x-model="setting.min">
+                        <input type="number" id="setting_min" x-model="$store.settings.item.min">
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="setting_max">Max</label>
-                        <input type="number" id="setting_max" x-model="setting.max">
+                        <input type="number" id="setting_max" x-model="$store.settings.item.max">
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="setting_step">Step</label>
-                        <input type="number" id="setting_step" x-model="setting.step">
+                        <input type="number" id="setting_step" x-model="$store.settings.item.step">
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="setting_unit">Unit</label>
-                        <select id="setting_unit" x-model="setting.unit">
+                        <select id="setting_unit" x-model="$store.settings.item.unit">
                           <option value="px">px</option>
                           <option value="rem">rem</option>
                           <option value="em">em</option>
@@ -265,7 +296,7 @@
                   </div>
                 </template>
 
-                <template x-if="['radio', 'select'].includes(setting.type)">
+                <template x-if="['radio', 'select'].includes($store.settings.item.type)">
                   <div class="lg:col-span-6">
                     <p class="text-sm font-medium">
                       Options
@@ -274,34 +305,49 @@
                     <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                       <div class="lg:col-span-3">
                         <label for="option_label">Label</label>
-                        <input type="text" id="option_label" x-model="option.label">
+
+                        <input
+                          type="text"
+                          id="option_label"
+                          x-model="$store.options.item.label"
+                        >
                       </div>
 
                       <div class="lg:col-span-3">
                         <label for="option_value">Value</label>
-                        <input type="text" id="option_value" x-model="option.value">
+
+                        <input
+                          type="text"
+                          id="option_value"
+                          x-model="$store.options.item.value"
+                        >
                       </div>
 
                       <template x-if="setting.type === 'select'">
                         <div class="lg:col-span-3">
                           <label for="option_group">Group</label>
-                          <input type="text" id="option_group" x-model="option.group">
+
+                          <input
+                            type="text"
+                            id="option_group"
+                            x-model="$store.options.item.group"
+                          >
                         </div>
                       </template>
                     </div>
 
-                    <template x-if="setting.options.length > 0">
+                    <template x-if="$store.options.items.length > 0">
                       <div class="flow-root mt-4">
                         <ul class="flex flex-wrap -m-1">
-                          <template x-for="(option, index) in setting.options">
+                          <template x-for="(option, index) in $store.options.items">
                             <li class="p-1">
                               <strong class="inline-flex items-center px-3 py-1 bg-gray-100 border border-gray-200 rounded-full">
                                 <span class="text-xs font-medium" x-text="option.label"></span>
 
                                 <button
                                   type="button"
-                                  @click="removeOption(index)"
                                   class="w-5 h-5 p-0 rounded-full"
+                                  @click="$store.options.remove(index)"
                                 >
                                   <span role="img" class="ml-0">
                                     🗑
@@ -316,8 +362,8 @@
 
                     <button
                       type="button"
-                      @click="addOption"
                       class="mt-4 bg-gray-200"
+                      @click="$store.options.add"
                     >
                       Add Option
 
@@ -333,10 +379,19 @@
                     Block
                   </label>
 
-                  <select id="target" x-model="target">
-                    <option value="">Please Select</option>
-                    <template x-for="block in blocks">
-                      <option :value="block.name" x-text="block.name"></option>
+                  <select
+                    id="target"
+                    x-model="$store.block"
+                  >
+                    <option>
+                      Please Select
+                    </option>
+
+                    <template x-for="block in $store.blocks.items">
+                      <option
+                        :value="block.name"
+                        x-text="block.name"
+                      ></option>
                     </template>
                   </select>
                 </div>
@@ -344,8 +399,8 @@
                 <div class="lg:col-span-6">
                   <button
                     type="button"
-                    @click="addSetting"
                     class="bg-gray-200"
+                    @click="$store.settings.add"
                   >
                     Add Setting
 
@@ -370,31 +425,52 @@
                   Blocks
                 </legend>
 
-                <p class="mt-1 text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
+                <p class="mt-1 text-sm max-w-[40ch]">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Error tempora ea quo doloremque aperiam ad!
                 </p>
               </div>
 
               <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
                 <div class="lg:col-span-3">
-                  <label for="block_name">Name</label>
-                  <input type="text" id="block_name" x-model="block.name">
+                  <label for="block_name">
+                    Name
+                  </label>
+
+                  <input
+                    type="text"
+                    id="block_name"
+                    x-model="$store.blocks.item.name"
+                  >
                 </div>
 
                 <div class="lg:col-span-3">
-                  <label for="block_type">Type</label>
-                  <input type="text" id="block_type" x-model="block.type">
+                  <label for="block_type">
+                    Type
+                  </label>
+
+                  <input
+                    type="text"
+                    id="block_type"
+                    x-model="$store.blocks.item.type"
+                  >
                 </div>
 
                 <div class="lg:col-span-3">
-                  <label for="block_limit">Limit</label>
-                  <input type="number" id="block_limit" x-model="block.limit">
+                  <label for="block_limit">
+                    Limit
+                  </label>
+
+                  <input
+                    type="number"
+                    id="block_limit"
+                    x-model="$store.blocks.item.limit"
+                  >
                 </div>
 
                 <div class="lg:col-span-6">
                   <button
                     type="button"
-                    @click="addBlock"
+                    @click="$store.blocks.add"
                     class="bg-gray-200"
                   >
                     Add Block
@@ -421,7 +497,7 @@
                     Enhanced Features
                   </p>
 
-                  <p class="mt-1 text-sm">
+                  <p class="mt-1 text-sm max-w-[40ch]">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
                   </p>
                 </div>
@@ -440,23 +516,30 @@
                         Presets
                       </legend>
 
-                      <p class="mt-1 text-sm">
+                      <p class="mt-1 text-sm max-w-[40ch]">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
                       </p>
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                       <div class="lg:col-span-3">
-                        <label for="preset_name">Name</label>
-                        <input type="text" id="preset_name" x-model="preset.name">
+                        <label for="preset_name">
+                          Name
+                        </label>
+
+                        <input
+                          type="text"
+                          id="preset_name"
+                          x-model="$store.presets.item.name"
+                        >
                       </div>
 
                       <div class="lg:col-span-6">
-                        <template x-if="presets.length === 0">
+                        <template x-if="$store.presets.items.length === 0">
                           <button
                             type="button"
-                            @click="addPreset"
                             class="bg-gray-200"
+                            @click="$store.presets.add"
                           >
                             Add Preset
 
@@ -466,11 +549,11 @@
                           </button>
                         </template>
 
-                        <template x-if="presets.length > 0">
+                        <template x-if="$store.presets.items.length !== 0">
                           <button
                             type="button"
-                            @click="removePreset"
                             class="bg-gray-200"
+                            @click="$store.presets.remove"
                           >
                             Remove Preset
 
@@ -496,36 +579,60 @@
                         Locales
                       </legend>
 
-                      <p class="mt-1 text-sm">
+                      <p class="mt-1 text-sm max-w-[40ch]">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate, cupiditate?
                       </p>
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                       <div class="lg:col-span-3">
-                        <label for="translation_lang">Language</label>
-                        <input type="text" id="translation_lang" x-model="translation.lang">
+                        <label for="translation_lang">
+                          Language
+                        </label>
+
+                        <input
+                          type="text"
+                          id="translation_lang"
+                          x-model="$store.locales.item.lang"
+                        >
                       </div>
 
                       <div class="lg:col-span-3">
-                        <label for="translate_setting">Setting</label>
-                        <select id="translate_setting" x-model="translation.setting">
-                          <option value="">Please Select</option>
-                          <template x-for="setting in allSettings">
-                            <option :value="setting.id" x-text="setting.label"></option>
+                        <label for="translate_setting">
+                          Setting
+                        </label>
+
+                        <select
+                          id="translate_setting"
+                          x-model="$store.locales.item.setting"
+                        >
+                          <option>Please Select</option>
+
+                          <template x-for="setting in $store.schema.settings">
+                            <option
+                              :value="setting.id"
+                              x-text="setting.label"
+                            ></option>
                           </template>
                         </select>
                       </div>
 
                       <div class="lg:col-span-3">
-                        <label for="translate_value">Value</label>
-                        <input type="text" id="translate_value" x-model="translation.value">
+                        <label for="translate_value">
+                          Value
+                        </label>
+
+                        <input
+                          type="text"
+                          id="translate_value"
+                          x-model="$store.locales.item.value"
+                        >
                       </div>
 
                       <div class="lg:col-span-6">
                         <button
                           type="button"
-                          @click="addTranslation"
+                          @click="$store.locales.add"
                           class="bg-gray-200"
                         >
                           Add Translation
@@ -548,18 +655,14 @@
                     Settings
                   </p>
 
-                  <template x-if="settings.length === 0">
+                  <template x-if="!$store.settings.items || $store.settings.items.length === 0">
                     <p class="mt-1 text-sm text-gray-500">
-                      Nothing to see here... Let's add a setting!
-
-                      <span role="img">
-                        💪
-                      </span>
+                      Nothing to see here...
                     </p>
                   </template>
 
                   <ul class="mt-4 space-y-4">
-                    <template x-for="(setting, index) in settings">
+                    <template x-for="(setting, index) in $store.settings.items">
                       <li
                         x-data="{ show: false }"
                         class="p-2 bg-gray-100 border border-gray-200 rounded-lg"
@@ -574,16 +677,16 @@
                           <div class="flex items-center space-x-1.5">
                             <button
                               type="button"
-                              @click="show = !show"
                               class="px-1.5 py-1 text-xs bg-blue-100 rounded"
+                              @click="show = !show"
                             >
                               Manage
                             </button>
 
                             <button
                               type="button"
-                              @click="removeSetting(index)"
                               class="px-1.5 py-1 text-xs bg-red-100 rounded"
+                              @click="$store.settings.remove(index)"
                             >
                               Remove
                             </button>
@@ -599,37 +702,37 @@
                               Move
                             </label>
 
-                            <select @change="moveSetting(index, 'settings', $event.target.value)">
+                            <select @change="$store.settings.move(index, $event.target.value)">
                               <option value="">Please Select</option>
-                              <template x-for="block in blocks">
+                              <template x-for="block in $store.blocks.items">
                                 <option :value="block.name" x-text="block.name"></option>
                               </template>
                             </select>
                           </div>
 
-                          <template x-if="Object.keys(filteredTranslations(setting.id)).length > 0">
+                          <template x-if="$store.locales.any(setting)">
                             <div class="p-2 border border-gray-200 rounded-lg bg-gray-50">
                               <p class="text-sm font-medium">
                                 Locales
                               </p>
 
                               <ul class="mt-1.5 space-y-1.5">
-                                <template x-for="(translation, lang) in filteredTranslations(setting.id)">
+                                <template x-for="(value, key) in $store.locales.translations(setting)">
                                   <li class="flex items-center justify-between">
                                     <span
-                                      x-text="translation[setting.id]"
+                                      x-text="value[setting.id]"
                                       class="text-xs font-medium"
                                     ></span>
 
                                     <div class="flex items-center space-x-1.5">
                                       <span
-                                        x-text="lang"
+                                        x-text="key"
                                         class="px-1.5 py-1 text-xs font-medium rounded bg-blue-100"
                                       ></span>
 
                                       <button
                                         type="button"
-                                        @click="removeTranslation(lang, setting.id)"
+                                        @click="$store.locales.remove(key, setting)"
                                         class="px-1.5 py-1 text-xs bg-red-100 rounded"
                                       >
                                         Remove
@@ -651,18 +754,14 @@
                     Blocks
                   </p>
 
-                  <template x-if="blocks.length === 0">
+                  <template x-if="!$store.blocks.items || $store.blocks.items.length === 0">
                     <p class="mt-1 text-sm text-gray-500">
-                      Nothing to see here... Let's add some blocks!
-
-                      <span role="img">
-                        🤖
-                      </span>
+                      Nothing to see here...
                     </p>
                   </template>
 
                   <ul class="mt-4 space-y-4">
-                    <template x-for="(block, index) in blocks">
+                    <template x-for="(block, index) in $store.blocks.items">
                       <li class="p-2 bg-gray-100 border border-gray-200 rounded-lg">
                         <div class="flex items-center justify-between">
                           <span
@@ -673,7 +772,7 @@
 
                           <button
                             type="button"
-                            @click="removeBlock(index)"
+                            @click="$store.blocks.remove(index)"
                             class="px-1.5 py-1 text-xs bg-red-100 rounded"
                           >
                             Remove
@@ -702,7 +801,7 @@
 
                                     <button
                                       type="button"
-                                      @click="removeSetting(index)"
+                                      @click="$store.settings.remove(index, block.name)"
                                       class="px-1.5 py-1 text-xs bg-red-100 rounded"
                                     >
                                       Remove
@@ -719,22 +818,30 @@
                                       Move
                                     </label>
 
-                                    <select @change="moveSetting(index, 'settings', $event.target.value)">
-                                      <option value="">Please Select</option>
-                                      <template x-for="block in blocks">
-                                        <option :value="block.name" x-text="block.name"></option>
+                                    <select @change="$store.settings.move(index, $event.target.value, block.name)">
+                                      <option>Please Select</option>
+                                      <option value="settings">Settings</option>
+
+                                      <template x-for="item in $store.blocks.items">
+                                        <template x-if="item.name !== block.name">
+                                          <option
+                                            :value="item.name"
+                                            x-text="item.name"
+                                          >
+                                          </option>
+                                        </template>
                                       </template>
                                     </select>
                                   </div>
 
-                                  <template x-if="Object.keys(filteredTranslations(setting.id)).length > 0">
+                                  <template x-if="$store.locales.any(setting)">
                                     <div class="p-2 border border-gray-200 rounded-lg bg-gray-50">
                                       <p class="text-sm font-medium">
                                         Locales
                                       </p>
 
                                       <ul class="mt-1.5 space-y-1.5">
-                                        <template x-for="(translation, lang) in filteredTranslations(setting.id)">
+                                        <template x-for="(translation, lang) in $store.locales.translations(setting)">
                                           <li class="flex items-center justify-between">
                                             <span
                                               x-text="translation[setting.id]"
@@ -773,15 +880,15 @@
 
               <div class="relative lg:col-span-2">
                 <textarea
-                  rows="20"
+                  rows="15"
                   id="textarea"
-                  x-text="JSON.stringify(data, null, 2)"
+                  x-text="JSON.stringify($store.schema.data, null, 2)"
                   class="block font-mono bg-white border border-gray-200 rounded-lg"
                 ></textarea>
 
                 <button
                   type="button"
-                  @click="copyToClipboard"
+                  @click="$store.schema.copy"
                   class="absolute bg-gray-200 bottom-3 right-3"
                 >
                   Copy to Clipboard
@@ -797,7 +904,7 @@
           <div class="flex justify-end mt-8">
             <button
               type="submit"
-              class="w-full text-white bg-green-600 lg:w-auto"
+              class="text-white bg-green-600"
             >
               Update Section
 
@@ -812,317 +919,376 @@
   </main>
 
   <script>
+    // Details
+
     document.addEventListener('alpine:init', () => {
-      Alpine.data('schema', () => ({
-        init() {
-          this.createSection()
-        },
+      Alpine.store('details', {
+        max_blocks: '',
+        tag: 'section',
+        name: 'Shopify Section',
+        class: 'shopify-section'
+      })
+    })
+  </script>
 
-        details: {
-          name: 'Shopify Section',
-          tag: 'div',
-          class: 'shopify-section',
-          max_blocks: '',
-        },
+  <script>
+    // Settings
 
-        settings: [],
+    const DEFAULT_SETTING = {
+      id: 'message',
+      type: 'text',
+      label: 'Message',
+      default: '',
+      placeholder: '',
+      info: '',
+      min: '',
+      max: '',
+      step: '',
+      unit: '',
+      options: [],
+      accept: [],
+    }
 
-        setting: {
-          type: 'text',
-          id: 'message',
-          label: 'Message',
-          default: '',
-          placeholder: '',
-          info: '',
-          options: [],
-          accept: [],
-          min: '',
-          max: '',
-          step: '',
-          unit: '',
-        },
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('settings', {
+        items: [],
+        item: { ...DEFAULT_SETTING },
 
-        option: {
-          value: '',
-          label: '',
-          group: '',
-        },
+        add() {
+          const options = Alpine.store('options').items
+          const blocks = Alpine.store('blocks').items
+          const selectedBlock = Alpine.store('block')
+          const setting = self.item
 
-        blocks: [],
+          let newSetting = options.length > 0 && { ...setting, options: [...options] } || { ...setting }
+          newSetting = _.omitBy(newSetting, _.isEmpty)
 
-        block: {
-          name: '',
-          type: '',
-          limit: '',
-          settings: [],
-        },
+          if (selectedBlock) {
+            const block = _.find(blocks, { name: selectedBlock })
+            const { settings: blockSettings } = block
+            const newBlockSettings = blockSettings.length > 0 && [...blockSettings, setting] || [setting]
 
-        presets: [],
+            block.settings = newBlockSettings
 
-        preset: {
-          name: '',
-          settings: [],
-          blocks: []
-        },
-
-        locales: {},
-
-        translation: {
-          lang: 'en',
-          setting: 'message',
-          value: 'Hello',
-        },
-
-        target: '',
-        data: '',
-
-        addSetting() {
-          let target = this.target
-          let setting = Object.assign({}, this.setting)
-
-          Object.keys(setting).forEach(key => {
-            if (setting[key].length === 0) {
-              delete setting[key]
-            }
-          })
-
-          if (target) {
-            let block = this.blocks.find(block => block.name === target)
-
-            block.settings.push(setting)
+            Alpine.store('block', '')
           } else {
-            this.settings.push(setting)
+            self.items = [...self.items, newSetting]
           }
 
-          this.setting = {
-            type: 'text',
-            id: 'message',
-            label: 'Message',
-            default: '',
-            placeholder: '',
-            info: '',
-            options: [],
-            accept: [],
-            min: '',
-            max: '',
-            step: '',
-            unit: '',
-          }
+          self.item = { ...DEFAULT_SETTING }
 
-          this.target = ''
+          Alpine.store('schema').update()
         },
 
-        removeSetting(index, target) {
-          let block = this.blocks.find(block => block.name === target)
+        remove(index, block) {
+          const blocks = Alpine.store('blocks').items
 
-          if(block) {
-            block.settings.splice(index, 1)
+          if (block) {
+            const currentBlock = _.find(blocks, { 'name': block })
+            const newBlockSettings = _.filter(currentBlock.settings, (item, itemIndex) => itemIndex !== index)
+
+            currentBlock.settings = newBlockSettings
           } else {
-            this.settings.splice(index, 1);
+            const newSettings = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
+            self.items = newSettings
           }
+
+          Alpine.store('schema').update()
         },
 
-        moveSetting(index, name, target) {
-          if(target === 'settings') {
-            let block = this.blocks.find(block => block.name === name)
-            let setting = block.settings[index]
+        move(index, name, block) {
+          const blocks = Alpine.store('blocks').items
+          const currentBlock = _.find(blocks, { name: block })
+          const isSettings = name === 'settings'
 
-            this.settings.push(setting)
+          if (isSettings) {
+            const currentSetting = currentBlock.settings[index]
 
-            block.settings.splice(index, 1)
+            self.items = [...self.items, currentSetting]
+            currentBlock.settings = _.filter(currentBlock.settings, (item, itemIndex) => itemIndex !== index)
           } else {
-            let block = this.blocks.find(block => block.name === target)
-            let setting = this.settings[index]
+            const currentSetting = self.items[index]
 
-            Object.keys(this.locales).forEach(lang => {
-              delete this.locales[lang][setting.id]
-            })
-
-            block.settings.push(setting)
-
-            this.settings.splice(index, 1)
+            currentBlock.settings = [...currentBlock.settings, currentSetting]
+            self.items = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
           }
+
+          Alpine.store('schema').update()
+        },
+      })
+
+      const self = Alpine.store('settings')
+    })
+  </script>
+
+  <script>
+    // Options
+
+    const DEFAULT_OPTION = {
+      value: '',
+      label: '',
+      group: '',
+    }
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('options', {
+        items: [],
+        item: { ...DEFAULT_OPTION },
+
+        add() {
+          let newItem = self.item
+          newItem = _.omitBy(newItem, _.isEmpty)
+
+          const newItems = self.items && [...self.items, newItem] || [newItem]
+
+          self.items = newItems
+          self.item = { ...DEFAULT_OPTION }
         },
 
-        addOption() {
-          this.setting.options.push(this.option);
+        remove(index) {
+          const newItems = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
 
-          this.option = {
-            value: '',
-            label: '',
-            group: '',
-          };
+          self.items = newItems
         },
+      })
 
-        removeOption(index) {
-          this.setting.options.splice(index, 1);
-        },
+      const self = Alpine.store('options')
+    })
+  </script>
 
-        addBlock() {
-          let types = this.blocks.map(block => block.type);
-          let type = this.block.type;
+  <script>
+    const DEFAULT_BLOCK = {
+      name: '',
+      type: '',
+      limit: '',
+      settings: [],
+    }
 
-          let block = Object.assign({}, this.block)
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('blocks', {
+        items: [],
+        item: { ...DEFAULT_BLOCK },
 
-          Object.keys(block).forEach(key => {
-            block[key] === '' && delete block[key]
-          })
+        add() {
+          const { type } = self.item
+          const types = _.map(self.items, 'type')
 
           if (types.includes(type)) return
 
-          this.blocks.push(block);
+          let newBlock = self.item
+          newBlock = _.omitBy(newBlock, _.isEmpty)
 
-          this.block = {
-            name: '',
-            type: '',
-            limit: '',
-            settings: [],
-          };
+          const newItems = self.items && [...self.items, newBlock] || [newBlock]
+
+          self.items = newItems
+          self.item = { ...DEFAULT_BLOCK }
+
+          Alpine.store('schema').update()
         },
 
-        removeBlock(index) {
-          this.blocks.splice(index, 1);
+        remove(index) {
+          const newItems = _.find(self.items, [], [index])
+
+          self.items = newItems
+
+          Alpine.store('schema').update()
+        },
+      })
+
+      const self = Alpine.store('blocks')
+    })
+  </script>
+
+  <script>
+    // Block
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('block', '')
+    })
+  </script>
+
+  <script>
+    // Presets
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('presets', {
+        items: [],
+        item: {
+          name: ''
         },
 
-        addPreset() {
-          let preset = Object.assign({}, this.preset)
+        add() {
+          const newItems = self.items && [...self.items, self.item] || [self.item]
 
-          Object.keys(preset).forEach(key => {
-            if (preset[key].length === 0) {
-              delete preset[key]
-            }
-          })
+          self.items = newItems
 
-          this.presets.push(this.preset)
+          Alpine.store('schema').update()
+        },
 
-          this.preset = {
-            name: '',
-            settings: [],
-            blocks: []
+        remove() {
+          self.items = []
+
+          Alpine.store('schema').update()
+        }
+      })
+
+      const self = Alpine.store('presets')
+    })
+  </script>
+
+  <script>
+    // Locales
+
+    // This is by far the most complicated store in the whole project
+    // don't be put off, keep pushing through 💪
+
+    const DEFAULT_TRANSLATION = {
+      lang: '',
+      value: '',
+      setting: '',
+    }
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('locales', {
+        items: [],
+        item: { ...DEFAULT_TRANSLATION },
+
+        add() {
+          const { lang, setting, value } = self.item
+          const locale = self.items[lang] || {}
+          const newLocale = { ...locale, [setting]: value }
+
+          self.items = { ...self.items, [lang]: newLocale }
+          self.item = { ...DEFAULT_TRANSLATION }
+
+          Alpine.store('schema').update()
+        },
+
+        remove(key, setting) {
+          const { id } = setting
+          const locale = self.items[key]
+          const newLocale = _.pickBy(locale, (value, key) => key !== id)
+
+          let newItems = { ...self.items, [key]: newLocale }
+
+          newItems = _.keys(newLocale).length === 0 && _.omit(self.items, key)
+
+          self.items = newItems
+
+          Alpine.store('schema').update()
+        },
+
+        translations(setting) {
+          const { id } = setting
+          const keys = _.keys(self.items)
+          const translations = _.pick(self.items, [...keys, id])
+
+          return translations
+        },
+
+        any(setting) {
+          const { id } = setting
+          const translations = self.translations(id)
+
+          return _.keys(translations).length > 0
+        }
+      })
+
+      const self = Alpine.store('locales')
+    })
+  </script>
+
+
+  <script>
+    // Main
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('schema', {
+        data: {},
+
+        update() {
+          const { name, tag, max_blocks, class: className, } = Alpine.store('details')
+          const { items: settings } = Alpine.store('settings')
+          const { items: blocks } = Alpine.store('blocks')
+          const { items: presets } = Alpine.store('presets')
+          const { items: locales } = Alpine.store('locales')
+
+          let schemaData = {
+            name,
+            tag,
+            max_blocks,
+            class: className,
+            settings,
+            blocks,
+            presets,
+            locales
           }
+
+          schemaData = _.omitBy(schemaData, _.isEmpty)
+
+          self.data = schemaData
         },
 
-        removePreset() {
-          this.presets.pop()
+        settings() {
+          const { items: settings } = Alpine.store('settings')
+          const { items: blocks } = Alpine.store('blocks')
+          const blockSettings = _.flatMap(blocks, (block) => block.settings)
+
+          return [...settings, ...blockSettings]
         },
 
-        addTranslation() {
-          let translation = Object.assign({}, this.translation)
-
-          if (!this.locales[translation.lang]) {
-            this.locales[translation.lang] = {}
-          }
-
-          let locale = this.locales[translation.lang]
-
-          locale[translation.setting] = translation.value
-
-          this.translation = {
-            name: '',
-            setting: '',
-            value: '',
-          }
-        },
-
-        removeTranslation(key, id) {
-          let locale = this.locales[key]
-
-          delete locale[id]
-        },
-
-        createSection() {
-          let data = {
-            name: this.details.name,
-            tag: this.details.tag,
-            class: this.details.class,
-            max_blocks: this.details.max_blocks,
-            settings: this.settings,
-            blocks: this.blocks,
-            presets: this.presets,
-            locales: this.locales,
-          }
-
-          Object.keys(data).forEach(key => {
-            data[key] === '' && delete data[key]
-          })
-
-          this.data = data
-        },
-
-        filteredTranslations(id) {
-          let settingTranslations = Object.entries(this.locales).reduce((acc, [key, value]) => {
-            if (Object.keys(value).includes(id)) {
-              acc[key] = value
-            }
-
-            return acc
-          }, {})
-
-          return settingTranslations
-        },
-
-        allSettings() {
-          let blockSettings = this.blocks.flatMap((block) => block.settings)
-
-          return [...this.settings, ...blockSettings]
-        },
-
-        copyToClipboard() {
-          let textarea = document.getElementById('textarea')
+        copy() {
+          const textarea = document.getElementById('textarea')
 
           textarea.select()
           document.execCommand('copy')
         },
 
-        shouldShow(input) {
-          let type = this.setting.type
-          let base = ['id', 'label', 'info']
-          let show = []
+        show(input) {
+          const { item: setting } = Alpine.store('settings')
+          const { type } = setting
+          const BASE_INPUTS = ['id', 'label', 'info']
+
+          let showFields = [...BASE_INPUTS]
 
           switch (type) {
             case 'text':
-              show = [...base, 'default', 'placeholder']
-              break
             case 'textarea':
-              show = [...base, 'default', 'placeholder']
-              break
             case 'number':
-              show = [...base, 'default', 'placeholder']
+              showFields = [...showFields, 'placeholder', 'default']
+              break
+            case 'checkbox':
+            case 'radio':
+            case 'color':
+            case 'font_picker':
+            case 'html':
+            case 'liquid':
+            case 'richtext':
+            showFields = [...showFields, 'default']
               break
             case 'range':
-              show = [...base, 'default', 'min', 'max', 'step', 'unit']
+              showFields = [...showFields, 'min', 'max', 'step', 'unit', 'default']
               break
             case 'select':
-              show = [...base, 'default', 'options']
-              break
-            case 'color':
-              show = [...base, 'default']
-              break
-            case 'font_picker':
-              show = [...base, 'default']
-              break
-            case 'html':
-              show = [...base, 'default']
-              break
-            case 'liquid':
-              show = [...base, 'default']
-              break
-            case 'richtext':
-              show = [...base, 'default']
+              showFields = [...showFields, 'options', 'default']
               break
             case 'video_url':
-              show = [...base, 'placeholder', 'accept']
+              showFields = [...showFields, 'accept']
               break
             case 'header':
-              show = ['content']
+              showFields = ['content']
               break
             default:
-              show = base
+              break
           }
 
-          return show.includes(input)
+          return showFields.includes(input)
         }
-      }))
+      })
+
+      const self = Alpine.store('schema')
+
+      self.update()
     })
   </script>
 </body>
