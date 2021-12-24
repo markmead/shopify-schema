@@ -117,6 +117,7 @@
                     <option value="text">text</option>
                     <option value="textarea">textarea</option>
                     <option value="number">number</option>
+                    <option value="checkbox">checkbox</option>
                     <option value="radio">radio</option>
                     <option value="range">range</option>
                     <option value="select">select</option>
@@ -948,6 +949,12 @@
               break
             case 'number':
               show = [...base, 'default', 'placeholder']
+              break
+            case 'checkbox':
+              show = [...base, 'default']
+              break
+            case 'radio':
+              show = [...base, 'default']
               break
             case 'range':
               show = [...base, 'default', 'min', 'max', 'step', 'unit']
