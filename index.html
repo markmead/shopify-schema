@@ -1034,7 +1034,9 @@
           const blocks = Alpine.store('blocks').items
           const selectedBlock = Alpine.store('block')
           const setting = self.item
-          const newSetting = options.length > 0 && { ...setting, options: [...options] } || { ...setting }
+
+          let newSetting = options.length > 0 && { ...setting, options: [...options] } || { ...setting }
+          newSetting = _.omitBy(newSetting, _.isEmpty)
 
           if (selectedBlock) {
             const block = _.find(blocks, { name: selectedBlock })
@@ -1103,7 +1105,10 @@
         item: { ...DEFAULT_OPTION },
 
         add() {
-          const newItems = self.items && [...self.items, self.item] || [self.item]
+          let newItem = self.item
+          newItem = _.omitBy(newItem, _.isEmpty)
+
+          const newItems = self.items && [...self.items, newItem] || [newItem]
 
           self.items = newItems
           self.item = { ...DEFAULT_OPTION }
@@ -1139,8 +1144,10 @@
 
           if (types.includes(type)) return
 
-          const block = self.item
-          const newItems = self.items && [...self.items, block] || [block]
+          let newBlock = self.item
+          newBlock = _.omitBy(newBlock, _.isEmpty)
+
+          const newItems = self.items && [...self.items, newBlock] || [newBlock]
 
           self.items = newItems
           self.item = { ...DEFAULT_BLOCK }
