@@ -159,7 +159,7 @@
                     <option value="font_picker">font picker</option>
                     <option value="html">html</option>
                     <option value="image_picker">image picker</option>
-                    <option value="link_link">link link</option>
+                    <option value="link_list">link list</option>
                     <option value="liquid">liquid</option>
                     <option value="richtext">richtext</option>
                     <option value="url">url</option>
@@ -608,11 +608,13 @@
                         >
                           <option>Please Select</option>
 
-                          <template x-for="setting in $store.schema.settings">
-                            <option
-                              :value="setting.id"
-                              x-text="setting.label"
-                            ></option>
+                          <template x-if="$store.schema.settings && $store.schema.settings.length > 0">
+                            <template x-for="setting in $store.schema.settings">
+                              <option
+                                :value="setting.id"
+                                x-text="setting.label"
+                              ></option>
+                            </template>
                           </template>
                         </select>
                       </div>
@@ -779,7 +781,7 @@
                           </button>
                         </div>
 
-                        <template x-if="block.settings.length > 0">
+                        <template x-if="block.settings && block.settings.length > 0">
                           <ul class="mt-4 space-y-4 border-t border-gray-200">
                             <template x-for="(setting, index) in block.settings">
                               <li x-data="{ show: false }">
@@ -856,7 +858,7 @@
 
                                               <button
                                                 type="button"
-                                                @click="removeTranslation(lang, setting.id)"
+                                                @click="$store.locales.remove(lang, setting.id)"
                                                 class="px-1.5 py-1 text-xs bg-red-100 rounded"
                                               >
                                                 Remove
@@ -960,13 +962,17 @@
           const selectedBlock = Alpine.store('block')
           const setting = self.item
 
-          let newSetting = options.length > 0 && { ...setting, options: [...options] } || { ...setting }
+          let newSetting =
+            options.length > 0
+              && { ...setting, options: [...options] } || { ...setting }
           newSetting = _.omitBy(newSetting, _.isEmpty)
 
           if (selectedBlock) {
             const block = _.find(blocks, { name: selectedBlock })
             const { settings: blockSettings } = block
-            const newBlockSettings = blockSettings.length > 0 && [...blockSettings, setting] || [setting]
+            const newBlockSettings =
+              (blockSettings && blockSettings.length > 0)
+                && [...blockSettings, newSetting] || [newSetting]
 
             block.settings = newBlockSettings
 
@@ -996,10 +1002,10 @@
           Alpine.store('schema').update()
         },
 
-        move(index, name, block) {
+        move(index, value, block = false) {
           const blocks = Alpine.store('blocks').items
-          const currentBlock = _.find(blocks, { name: block })
-          const isSettings = name === 'settings'
+          const isSettings = value === 'settings'
+          const currentBlock = isSettings ? _.find(blocks, { name: block }) : _.find(blocks, { name: value })
 
           if (isSettings) {
             const currentSetting = currentBlock.settings[index]
@@ -1008,8 +1014,12 @@
             currentBlock.settings = _.filter(currentBlock.settings, (item, itemIndex) => itemIndex !== index)
           } else {
             const currentSetting = self.items[index]
+            const currentBlockSettings = currentBlock.settings
+            const newCurrentBlockSettings =
+              (currentBlockSettings && currentBlockSettings.length > 0)
+                && [...currentBlockSettings, currentSetting] || [currentSetting]
 
-            currentBlock.settings = [...currentBlock.settings, currentSetting]
+            currentBlock.settings = newCurrentBlockSettings
             self.items = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
           }
 
@@ -1226,6 +1236,30 @@
 
           schemaData = _.omitBy(schemaData, _.isEmpty)
 
+          if (schemaData.max_blocks) schemaData.max_blocks = _.toInteger(schemaData.max_blocks)
+
+          if (schemaData.settings && schemaData.settings.length > 0) {
+            schemaData.settings.forEach((setting, index) => {
+              const newSetting = setValues(setting)
+
+              schemaData.settings[index] = newSetting
+            })
+          }
+
+          if (schemaData.blocks && schemaData.blocks.length > 0) {
+            schemaData.blocks.forEach((block, index) => {
+              if (block.limit) block.limit = _.toInteger(block.limit)
+
+              if (block.settings && block.settings.length > 0) {
+                block.settings.forEach((setting) => {
+                  const newSetting = setValues(setting)
+
+                  block.settings[index] = newSetting
+                })
+              }
+            })
+          }
+
           self.data = schemaData
         },
 
@@ -1289,6 +1323,23 @@
       const self = Alpine.store('schema')
 
       self.update()
+
+      function setValues(item) {
+        let newItem = item
+
+        if (newItem.min) newItem.min = _.toInteger(newItem.min)
+        if (newItem.max) newItem.max = _.toInteger(newItem.max)
+        if (newItem.step) newItem.step = _.toInteger(newItem.step)
+        if (newItem.type === 'number') newItem.default = _.toInteger(newItem.default)
+
+        if (newItem.type === 'checkbox') {
+          let isBoolean = newItem.default === 'true' || newItem.default === 'false'
+
+          newItem.default = isBoolean ? JSON.parse(newItem.default) : false
+        }
+
+        return newItem
+      }
     })
   </script>
 </body>
