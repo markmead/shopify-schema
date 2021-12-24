@@ -31,11 +31,11 @@
       </section>
 
       <section
-        x-data="schema"
+        x-data
         class="p-8 mt-8 border border-gray-100 bg-gray-50 rounded-3xl"
       >
         <form
-          @submit.prevent="updateSection"
+          @submit.prevent="$store.schema.update"
           class="flow-root"
         >
           <div class="-my-8 divide-y divide-gray-100">
@@ -59,18 +59,41 @@
 
               <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
                 <div class="lg:col-span-3">
-                  <label for="details_name">Name</label>
-                  <input type="text" id="details_name" x-model="$store.details.name" @input="updateSection">
+                  <label for="details_name">
+                    Name
+                  </label>
+
+                  <input
+                    type="text"
+                    id="details_name"
+                    x-model="$store.details.name"
+                    @input="$store.schema.update"
+                  >
                 </div>
 
                 <div class="lg:col-span-3">
-                  <label for="details_class">Class</label>
-                  <input type="text" id="details_class" x-model="$store.details.class" @input="updateSection">
+                  <label for="details_class">
+                    Class
+                  </label>
+
+                  <input
+                    type="text"
+                    id="details_class"
+                    x-model="$store.details.class"
+                    @input="$store.schema.update"
+                  >
                 </div>
 
                 <div class="lg:col-span-2">
-                  <label for="details_tag">Tag</label>
-                  <select id="details_tag" x-model="$store.details.tag" @change="updateSection">
+                  <label for="details_tag">
+                    Tag
+                  </label>
+
+                  <select
+                    id="details_tag"
+                    x-model="$store.details.tag"
+                    @change="$store.schema.update"
+                  >
                     <option value="div">div</option>
                     <option value="section">section</option>
                     <option value="header">header</option>
@@ -81,8 +104,16 @@
                 </div>
 
                 <div class="lg:col-span-2">
-                  <label for="details_max_blocks">Max Blocks</label>
-                  <input type="number" id="details_max_blocks" x-model="$store.details.max_blocks" @input="updateSection">
+                  <label for="details_max_blocks">
+                    Max Blocks
+                  </label>
+
+                  <input
+                    type="number"
+                    id="details_max_blocks"
+                    x-model="$store.details.max_blocks"
+                    @input="$store.schema.update"
+                  >
                 </div>
               </div>
             </fieldset>
@@ -104,7 +135,7 @@
               </div>
 
               <div class="grid grid-cols-1 gap-4 lg:grid-cols-6 lg:col-span-2">
-                <template x-if="shouldShow('id')">
+                <template x-if="$store.schema.show('id')">
                   <div class="lg:col-span-3">
                     <label for="setting_id">ID</label>
                     <input type="text" id="setting_id" x-model="$store.settings.item.id">
@@ -137,28 +168,28 @@
                   </select>
                 </div>
 
-                <template x-if="shouldShow('label')">
+                <template x-if="$store.schema.show('label')">
                   <div class="lg:col-span-3">
                     <label for="setting_label">Label</label>
                     <input type="text" id="setting_label" x-model="$store.settings.item.label">
                   </div>
                 </template>
 
-                <template x-if="shouldShow('placeholder')">
+                <template x-if="$store.schema.show('placeholder')">
                   <div class="lg:col-span-3">
                     <label for="setting_placeholder">Placeholder</label>
                     <input type="text" id="setting_placeholder" x-model="$store.settings.item.placeholder">
                   </div>
                 </template>
 
-                <template x-if="shouldShow('content')">
+                <template x-if="$store.schema.show('content')">
                   <div class="lg:col-span-3">
                     <label for="setting_content">Content</label>
                     <input type="text" id="setting_content" x-model="$store.settings.item.content">
                   </div>
                 </template>
 
-                <template x-if="shouldShow('default')">
+                <template x-if="$store.schema.show('default')">
                   <div class="lg:col-span-6">
                     <label for="setting_default">Default</label>
                     <textarea id="setting_default" rows="4" x-model="$store.settings.item.default">
@@ -186,7 +217,7 @@
                   </div>
                 </template>
 
-                <template x-if="shouldShow('info')">
+                <template x-if="$store.schema.show('info')">
                   <div class="lg:col-span-6">
                     <label for="setting_info">Info</label>
                     <textarea id="setting_info" rows="4" x-model="$store.settings.item.info">
@@ -577,7 +608,7 @@
                         >
                           <option>Please Select</option>
 
-                          <template x-for="setting in allSettings">
+                          <template x-for="setting in $store.schema.settings">
                             <option
                               :value="setting.id"
                               x-text="setting.label"
@@ -851,13 +882,13 @@
                 <textarea
                   rows="15"
                   id="textarea"
-                  x-text="JSON.stringify(data, null, 2)"
+                  x-text="JSON.stringify($store.schema.data, null, 2)"
                   class="block font-mono bg-white border border-gray-200 rounded-lg"
                 ></textarea>
 
                 <button
                   type="button"
-                  @click="copyToClipboard"
+                  @click="$store.schema.copy"
                   class="absolute bg-gray-200 bottom-3 right-3"
                 >
                   Copy to Clipboard
@@ -886,112 +917,6 @@
       </section>
     </div>
   </main>
-
-  <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('schema', () => ({
-        init() {
-          this.updateSection()
-        },
-
-        data: '',
-
-        updateSection() {
-          const { name, tag, max_blocks, class: className, } = Alpine.store('details')
-          const { items: settings } = Alpine.store('settings')
-          const { items: blocks } = Alpine.store('blocks')
-          const { items: presets } = Alpine.store('presets')
-          const { items: locales } = Alpine.store('locales')
-
-          let schemaData = {
-            name,
-            tag,
-            max_blocks,
-            class: className,
-            settings,
-            blocks,
-            presets,
-            locales
-          }
-
-          schemaData = _.omitBy(schemaData, _.isEmpty)
-
-          this.data = schemaData
-        },
-
-        allSettings() {
-          const { items: settings } = Alpine.store('settings')
-          const { items: blocks } = Alpine.store('blocks')
-          const blockSettings = _.flatMap(blocks, (block) => block.settings)
-
-          return [...settings, ...blockSettings]
-        },
-
-        copyToClipboard() {
-          let textarea = document.getElementById('textarea')
-
-          textarea.select()
-          document.execCommand('copy')
-        },
-
-        shouldShow(input) {
-          const { item: setting } = Alpine.store('settings')
-          const { type } = setting
-          let base = ['id', 'label', 'info']
-          let show = []
-
-          switch (type) {
-            case 'text':
-              show = [...base, 'default', 'placeholder']
-              break
-            case 'textarea':
-              show = [...base, 'default', 'placeholder']
-              break
-            case 'number':
-              show = [...base, 'default', 'placeholder']
-              break
-            case 'checkbox':
-              show = [...base, 'default']
-              break
-            case 'radio':
-              show = [...base, 'default']
-              break
-            case 'range':
-              show = [...base, 'default', 'min', 'max', 'step', 'unit']
-              break
-            case 'select':
-              show = [...base, 'default', 'options']
-              break
-            case 'color':
-              show = [...base, 'default']
-              break
-            case 'font_picker':
-              show = [...base, 'default']
-              break
-            case 'html':
-              show = [...base, 'default']
-              break
-            case 'liquid':
-              show = [...base, 'default']
-              break
-            case 'richtext':
-              show = [...base, 'default']
-              break
-            case 'video_url':
-              show = [...base, 'placeholder', 'accept']
-              break
-            case 'header':
-              show = ['content']
-              break
-            default:
-              show = base
-          }
-
-          return show.includes(input)
-        }
-      }))
-    })
-  </script>
 
   <script>
     // Details
@@ -1051,6 +976,8 @@
           }
 
           self.item = { ...DEFAULT_SETTING }
+
+          Alpine.store('schema').update()
         },
 
         remove(index, block) {
@@ -1065,6 +992,8 @@
             const newSettings = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
             self.items = newSettings
           }
+
+          Alpine.store('schema').update()
         },
 
         move(index, name, block) {
@@ -1083,6 +1012,8 @@
             currentBlock.settings = [...currentBlock.settings, currentSetting]
             self.items = _.filter(self.items, (item, itemIndex) => itemIndex !== index)
           }
+
+          Alpine.store('schema').update()
         },
       })
 
@@ -1151,12 +1082,16 @@
 
           self.items = newItems
           self.item = { ...DEFAULT_BLOCK }
+
+          Alpine.store('schema').update()
         },
 
         remove(index) {
           const newItems = _.find(self.items, [], [index])
 
           self.items = newItems
+
+          Alpine.store('schema').update()
         },
       })
 
@@ -1186,10 +1121,14 @@
           const newItems = self.items && [...self.items, self.item] || [self.item]
 
           self.items = newItems
+
+          Alpine.store('schema').update()
         },
 
         remove() {
           self.items = []
+
+          Alpine.store('schema').update()
         }
       })
 
@@ -1221,6 +1160,8 @@
 
           self.items = { ...self.items, [lang]: newLocale }
           self.item = { ...DEFAULT_TRANSLATION }
+
+          Alpine.store('schema').update()
         },
 
         remove(key, setting) {
@@ -1233,6 +1174,8 @@
           newItems = _.keys(newLocale).length === 0 && _.omit(self.items, key)
 
           self.items = newItems
+
+          Alpine.store('schema').update()
         },
 
         translations(setting) {
@@ -1252,6 +1195,100 @@
       })
 
       const self = Alpine.store('locales')
+    })
+  </script>
+
+
+  <script>
+    // Main
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('schema', {
+        data: {},
+
+        update() {
+          const { name, tag, max_blocks, class: className, } = Alpine.store('details')
+          const { items: settings } = Alpine.store('settings')
+          const { items: blocks } = Alpine.store('blocks')
+          const { items: presets } = Alpine.store('presets')
+          const { items: locales } = Alpine.store('locales')
+
+          let schemaData = {
+            name,
+            tag,
+            max_blocks,
+            class: className,
+            settings,
+            blocks,
+            presets,
+            locales
+          }
+
+          schemaData = _.omitBy(schemaData, _.isEmpty)
+
+          self.data = schemaData
+        },
+
+        settings() {
+          const { items: settings } = Alpine.store('settings')
+          const { items: blocks } = Alpine.store('blocks')
+          const blockSettings = _.flatMap(blocks, (block) => block.settings)
+
+          return [...settings, ...blockSettings]
+        },
+
+        copy() {
+          const textarea = document.getElementById('textarea')
+
+          textarea.select()
+          document.execCommand('copy')
+        },
+
+        show(input) {
+          const { item: setting } = Alpine.store('settings')
+          const { type } = setting
+          const BASE_INPUTS = ['id', 'label', 'info']
+
+          let showFields = [...BASE_INPUTS]
+
+          switch (type) {
+            case 'text':
+            case 'textarea':
+            case 'number':
+              showFields = [...showFields, 'placeholder', 'default']
+              break
+            case 'checkbox':
+            case 'radio':
+            case 'color':
+            case 'font_picker':
+            case 'html':
+            case 'liquid':
+            case 'richtext':
+            showFields = [...showFields, 'default']
+              break
+            case 'range':
+              showFields = [...showFields, 'min', 'max', 'step', 'unit', 'default']
+              break
+            case 'select':
+              showFields = [...showFields, 'options', 'default']
+              break
+            case 'video_url':
+              showFields = [...showFields, 'accept']
+              break
+            case 'header':
+              showFields = ['content']
+              break
+            default:
+              break
+          }
+
+          return showFields.includes(input)
+        }
+      })
+
+      const self = Alpine.store('schema')
+
+      self.update()
     })
   </script>
 </body>
