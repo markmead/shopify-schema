@@ -265,7 +265,11 @@
 
                   <template x-if="$store.settings.item.type === 'video_url'">
                     <div class="lg:col-span-6">
-                      <p class="text-sm font-medium"> Accept </p>
+                      <p
+                        class="text-sm font-medium text-slate-900 dark:text-white"
+                      >
+                        Accept
+                      </p>
 
                       <div class="mt-4 space-y-2">
                         <div>
@@ -280,7 +284,11 @@
                               x-model="$store.settings.item.accept"
                             />
 
-                            <span class="ml-1.5 text-sm"> Vimeo </span>
+                            <span
+                              class="ml-1.5 text-sm text-slate-900 dark:text-white"
+                            >
+                              Vimeo
+                            </span>
                           </label>
                         </div>
 
@@ -296,7 +304,11 @@
                               x-model="$store.settings.item.accept"
                             />
 
-                            <span class="ml-1.5 text-sm"> YouTube </span>
+                            <span
+                              class="ml-1.5 text-sm text-slate-900 dark:text-white"
+                            >
+                              YouTube
+                            </span>
                           </label>
                         </div>
                       </div>
@@ -305,7 +317,11 @@
 
                   <template x-if="$store.settings.item.type === 'range'">
                     <div class="lg:col-span-6">
-                      <p class="text-sm font-medium"> Range </p>
+                      <p
+                        class="text-sm font-medium text-slate-900 dark:text-white"
+                      >
+                        Range
+                      </p>
 
                       <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                         <div class="lg:col-span-3">
@@ -382,7 +398,7 @@
                           />
                         </div>
 
-                        <template x-if="setting.type === 'select'">
+                        <template x-if="$store.settings.item.type === 'select'">
                           <div class="lg:col-span-3">
                             <label for="option_group">Group</label>
 
@@ -403,10 +419,10 @@
                             >
                               <li class="p-1">
                                 <strong
-                                  class="inline-flex items-center px-3 py-1 bg-gray-100 border border-gray-200 rounded-full"
+                                  class="inline-flex items-center px-3 py-1 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-full"
                                 >
                                   <span
-                                    class="text-xs font-medium"
+                                    class="text-xs font-medium text-slate-700 dark:text-slate-300"
                                     x-text="option.label"
                                   ></span>
 
@@ -645,6 +661,9 @@
                           >
                             <option>Please Select</option>
 
+                            <span
+                              x-text="$store.schema.settings.length > 0"
+                            ></span>
                             <template
                               x-if="$store.schema.settings && $store.schema.settings.length > 0"
                             >
