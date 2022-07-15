@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 label {
-  @apply block mb-1 text-sm font-medium;
+  @apply block mb-1 text-sm font-medium text-slate-700 dark:text-slate-300;
 }
 
 select,
 textarea,
 input[type='text'],
 input[type='number'] {
-  @apply w-full text-sm border-gray-200 rounded;
+  @apply w-full text-sm border-slate-200 dark:border-slate-600 dark:bg-slate-700 rounded dark:text-white text-slate-900;
 }
 
 input[type='checkbox'] {
-  @apply w-4 h-4 border-gray-200 rounded;
+  @apply w-4 h-4 border-gray-200 dark:border-slate-600 dark:bg-slate-700 rounded;
 }
 
 button {
