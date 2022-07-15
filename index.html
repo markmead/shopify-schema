@@ -661,14 +661,9 @@
                           >
                             <option>Please Select</option>
 
-                            <span
-                              x-text="$store.schema.settings.length > 0"
-                            ></span>
-                            <template
-                              x-if="$store.schema.settings && $store.schema.settings.length > 0"
-                            >
+                            <template x-if="$store.settings.items">
                               <template
-                                x-for="setting in $store.schema.settings"
+                                x-for="setting in $store.settings.items"
                               >
                                 <option
                                   :value="setting.id"
@@ -1320,7 +1315,7 @@
     <script>
       document.addEventListener('alpine:init', () => {
         Alpine.store('schema', {
-          data: Alpine.$persist({}).as('schemaData'),
+          data: {},
 
           update() {
             const {
