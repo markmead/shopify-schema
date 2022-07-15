@@ -1,18 +1,13 @@
 {
-  "name": "section-schema-ui",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:markmead/section-schema-ui.git",
-  "author": "markmead <itsmarkmead@gmail.com>",
-  "license": "MIT",
+  "name": "shopify-schema-creator",
+  "private": true,
   "scripts": {
-    "dev": "serve",
-    "css": "npx tailwindcss -i tailwind.css -o build.css --watch --minify"
+    "watch": "npx tailwindcss -i ./src/index.css -o ./build/index.css -w",
+    "build": "npx tailwindcss -i ./src/index.css -o ./build/index.css -m"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.4.0",
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.5",
-    "tailwindcss": "^3.0.7"
+    "@tailwindcss/forms": "^0.5.2",
+    "@tailwindcss/typography": "^0.5.3",
+    "tailwindcss": "^3.1.5"
   }
 }
