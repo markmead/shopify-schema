@@ -10,19 +10,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Section Schema UI | Shopify</title>
 
+    <script src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
     <script
       defer
-      src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"
+      src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"
     ></script>
 
     <script
       defer
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
-
-    <script
-      async
-      src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"
     ></script>
 
     <link href="/build/index.css" rel="stylesheet" />
@@ -713,12 +710,12 @@
                       >
                         <li
                           x-data="{ show: false }"
-                          class="p-2 bg-slate-100 border border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg"
+                          class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                         >
                           <div class="flex items-center justify-between">
                             <span
                               x-text="setting.label"
-                              class="text-sm font-medium text-slate-500 dark:text-slate-300"
+                              class="text-sm font-medium text-slate-700 dark:text-slate-200"
                             >
                             </span>
 
@@ -743,7 +740,7 @@
 
                           <div x-show="show" class="mt-4 space-y-4">
                             <div
-                              class="bg-slate-100 border border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg p-2"
+                              class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                             >
                               <label text-slate-500 dark:text-slate-300>
                                 Move
@@ -764,7 +761,7 @@
 
                             <template x-if="$store.locales.any(setting)">
                               <div
-                                class="p-2 border border-slate-200 rounded-lg bg-slate-50 dark:border-slate-800/50 dark:bg-slate-900/50"
+                                class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                               >
                                 <p
                                   class="text-sm font-medium text-slate-900 dark:text-white"
@@ -829,12 +826,12 @@
                     <ul class="mt-4 space-y-4">
                       <template x-for="(block, index) in $store.blocks.items">
                         <li
-                          class="p-2 bg-slate-100 border border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg"
+                          class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                         >
                           <div class="flex items-center justify-between">
                             <span
                               x-text="block.name"
-                              class="text-sm font-medium"
+                              class="text-sm font-medium text-slate-700 dark:text-slate-200"
                             >
                             </span>
 
@@ -851,7 +848,7 @@
                             x-if="block.settings && block.settings.length > 0"
                           >
                             <ul
-                              class="mt-4 space-y-4 border-t p-2 bg-slate-100 border border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg"
+                              class="p-4 mt-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                             >
                               <template
                                 x-for="(setting, index) in block.settings"
@@ -862,7 +859,7 @@
                                   >
                                     <span
                                       x-text="setting.label"
-                                      class="text-sm font-medium"
+                                      class="text-sm font-medium text-slate-700 dark:text-slate-200"
                                     >
                                     </span>
 
@@ -887,7 +884,7 @@
 
                                   <div x-show="show" class="mt-4 space-y-4">
                                     <div
-                                      class="p-2 border bg-slate-100 border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg"
+                                      class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                                     >
                                       <label> Move </label>
 
@@ -895,9 +892,9 @@
                                         @change="$store.settings.move(index, $event.target.value, block.name)"
                                       >
                                         <option>Please Select</option>
-                                        <option value="settings"
-                                          >Settings</option
-                                        >
+                                        <option value="settings">
+                                          Settings
+                                        </option>
 
                                         <template
                                           x-for="item in $store.blocks.items"
@@ -919,7 +916,7 @@
                                       x-if="$store.locales.any(setting)"
                                     >
                                       <div
-                                        class="p-2 border p-2 bg-slate-100 border border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg"
+                                        class="p-2 bg-slate-100 border border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg"
                                       >
                                         <p class="text-sm font-medium">
                                           Locales
@@ -934,7 +931,7 @@
                                             >
                                               <span
                                                 x-text="translation[setting.id]"
-                                                class="text-xs font-medium"
+                                                class="text-xs font-medium text-slate-500 dark:text-slate-300"
                                               ></span>
 
                                               <div
@@ -974,13 +971,13 @@
                     rows="15"
                     id="textarea"
                     x-text="JSON.stringify($store.schema.data, null, 2)"
-                    class="block font-mono bg-slate-100 border border-slate-200 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
+                    class="block font-mono h-full bg-slate-100 border border-slate-200 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                   ></textarea>
 
                   <button
                     type="button"
                     @click="$store.schema.copy"
-                    class="bg-violet-600 hover:scale-105 text-white transition absolute bottom-3 right-3"
+                    class="bg-violet-600 hover:scale-105 text-white transition absolute bottom-4 right-4"
                   >
                     Copy to Clipboard
 
@@ -990,34 +987,31 @@
               </div>
             </div>
 
-            <div class="flex justify-end mt-8">
-              <button type="submit" class="text-white bg-green-600">
-                Update Section
+            <button
+              type="submit"
+              class="bg-violet-600 hover:scale-105 text-white transition fixed right-4 bottom-4"
+            >
+              Save Form
 
-                <span role="img"> 👌 </span>
-              </button>
-            </div>
+              <span role="img"> 👌 </span>
+            </button>
           </form>
         </section>
       </div>
     </main>
 
     <script>
-      // Details
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('details', {
-          max_blocks: '',
-          tag: 'section',
-          name: 'Shopify Section',
-          class: 'shopify-section',
+          max_blocks: Alpine.$persist('').as('detailsMaxBlocks'),
+          tag: Alpine.$persist('section').as('detailsTag'),
+          name: Alpine.$persist('Shopify Section').as('detailsName'),
+          class: Alpine.$persist('shopify-section').as('detailsClass'),
         })
       })
     </script>
 
     <script>
-      // Settings
-
       const DEFAULT_SETTING = {
         id: 'message',
         type: 'text',
@@ -1035,8 +1029,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('settings', {
-          items: [],
-          item: { ...DEFAULT_SETTING },
+          items: Alpine.$persist([]).as('settingItems'),
+          item: Alpine.$persist({ ...DEFAULT_SETTING }).as('settingItem'),
 
           add() {
             const options = Alpine.store('options').items
@@ -1132,8 +1126,6 @@
     </script>
 
     <script>
-      // Options
-
       const DEFAULT_OPTION = {
         value: '',
         label: '',
@@ -1142,8 +1134,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('options', {
-          items: [],
-          item: { ...DEFAULT_OPTION },
+          items: Alpine.$persist([]).as('optionsItems'),
+          item: Alpine.$persist({ ...DEFAULT_OPTION }).as('optionsItem'),
 
           add() {
             let newItem = self.item
@@ -1181,8 +1173,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('blocks', {
-          items: [],
-          item: { ...DEFAULT_BLOCK },
+          items: Alpine.$persist([]).as('blocksItems'),
+          item: Alpine.$persist({ ...DEFAULT_BLOCK }).as('blocksItem'),
 
           add() {
             const { type } = self.item
@@ -1217,22 +1209,16 @@
     </script>
 
     <script>
-      // Block
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('block', '')
       })
     </script>
 
     <script>
-      // Presets
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('presets', {
-          items: [],
-          item: {
-            name: '',
-          },
+          items: Alpine.$persist([]).as('presetsItems'),
+          item: Alpine.$persist({ name: '' }).as('presetsItem'),
 
           add() {
             const newItems = (self.items && [...self.items, self.item]) || [
@@ -1256,11 +1242,6 @@
     </script>
 
     <script>
-      // Locales
-
-      // This is by far the most complicated store in the whole project
-      // don't be put off, keep pushing through 💪
-
       const DEFAULT_TRANSLATION = {
         lang: '',
         value: '',
@@ -1269,8 +1250,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('locales', {
-          items: [],
-          item: { ...DEFAULT_TRANSLATION },
+          items: Alpine.$persist([]).as('localesItems'),
+          item: Alpine.$persist({ ...DEFAULT_TRANSLATION }).as('localesItem'),
 
           add() {
             const { lang, setting, value } = self.item
@@ -1318,11 +1299,9 @@
     </script>
 
     <script>
-      // Main
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('schema', {
-          data: {},
+          data: Alpine.$persist({}).as('schemaData'),
 
           update() {
             const {
