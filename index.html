@@ -1,55 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+  lang="en"
+  x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches) }"
+  :class="{ 'dark': darkMode }"
+>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Section Schema UI | Shopify</title>
 
+    <script src="https://unpkg.com/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"
+    ></script>
+
     <script
       defer
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
 
-    <script
-      async
-      src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"
-    ></script>
-
     <link href="/build/index.css" rel="stylesheet" />
   </head>
 
-  <body class="relative antialiased">
+  <body x-data class="relative antialiased bg-white dark:bg-slate-900">
     <main>
       <div class="max-w-screen-xl px-4 sm:px-6 lg:px-8 py-12 mx-auto">
         <section>
-          <div class="max-w-prose">
-            <h1 class="text-3xl font-bold"> Section Schema UI for Shopify </h1>
+          <div class="flex items-end justify-between">
+            <div class="max-w-prose">
+              <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
+                Section Schema UI for Shopify
+              </h1>
 
-            <p class="mt-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
-              omnis exercitationem minus obcaecati suscipit culpa earum ea
-              consequuntur atque dolores, dolorem esse aspernatur, tenetur
-              nesciunt vel optio quibusdam explicabo debitis!
-            </p>
+              <p class="mt-4 text-slate-500 dark:text-slate-300">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius
+                omnis exercitationem minus obcaecati suscipit culpa earum ea
+                consequuntur atque dolores, dolorem esse aspernatur, tenetur
+                nesciunt vel optio quibusdam explicabo debitis!
+              </p>
+            </div>
+
+            <button
+              type="button"
+              @click="darkMode = !darkMode"
+              class="bg-slate-200 dark:bg-slate-700 dark:text-white"
+            >
+              <span x-show="darkMode" x-cloak> Light </span>
+
+              <span x-show="!darkMode" x-cloak> Dark </span>
+            </button>
           </div>
         </section>
 
         <section
-          x-data
-          class="p-8 mt-8 border border-gray-100 bg-gray-50 rounded-3xl"
+          class="p-8 mt-8 border border-slate-100 bg-slate-50 dark:border-slate-700 dark:bg-slate-800 rounded-3xl"
         >
           <form @submit.prevent="$store.schema.update" class="flow-root">
-            <div class="-my-8 divide-y divide-gray-100">
+            <div class="-my-8 divide-y divide-slate-100 dark:divide-slate-700">
               <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
                 <div>
-                  <legend class="font-medium">
+                  <legend class="font-medium text-slate-900 dark:text-white">
                     <span role="img" class="mr-1.5"> 📇 </span>
 
                     Details
                   </legend>
 
-                  <p class="mt-1 text-sm max-w-[40ch]">
+                  <p
+                    class="mt-1 text-sm max-w-[40ch] text-slate-500 dark:text-slate-300"
+                  >
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                     Odio laudantium eaque quibusdam, obcaecati sint sunt.
                   </p>
@@ -112,13 +133,15 @@
 
               <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
                 <div>
-                  <legend class="font-medium">
+                  <legend class="font-medium text-slate-900 dark:text-white">
                     <span role="img" class="mr-1.5"> 🐙 </span>
 
                     Settings
                   </legend>
 
-                  <p class="max-w-[40ch] mt-1 text-sm">
+                  <p
+                    class="mt-1 text-sm max-w-[40ch] text-slate-500 dark:text-slate-300"
+                  >
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                     Non, quod beatae voluptates possimus recusandae dolor!
                   </p>
@@ -242,7 +265,11 @@
 
                   <template x-if="$store.settings.item.type === 'video_url'">
                     <div class="lg:col-span-6">
-                      <p class="text-sm font-medium"> Accept </p>
+                      <p
+                        class="text-sm font-medium text-slate-900 dark:text-white"
+                      >
+                        Accept
+                      </p>
 
                       <div class="mt-4 space-y-2">
                         <div>
@@ -257,7 +284,11 @@
                               x-model="$store.settings.item.accept"
                             />
 
-                            <span class="ml-1.5 text-sm"> Vimeo </span>
+                            <span
+                              class="ml-1.5 text-sm text-slate-900 dark:text-white"
+                            >
+                              Vimeo
+                            </span>
                           </label>
                         </div>
 
@@ -273,7 +304,11 @@
                               x-model="$store.settings.item.accept"
                             />
 
-                            <span class="ml-1.5 text-sm"> YouTube </span>
+                            <span
+                              class="ml-1.5 text-sm text-slate-900 dark:text-white"
+                            >
+                              YouTube
+                            </span>
                           </label>
                         </div>
                       </div>
@@ -282,7 +317,11 @@
 
                   <template x-if="$store.settings.item.type === 'range'">
                     <div class="lg:col-span-6">
-                      <p class="text-sm font-medium"> Range </p>
+                      <p
+                        class="text-sm font-medium text-slate-900 dark:text-white"
+                      >
+                        Range
+                      </p>
 
                       <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                         <div class="lg:col-span-3">
@@ -332,7 +371,11 @@
                     x-if="['radio', 'select'].includes($store.settings.item.type)"
                   >
                     <div class="lg:col-span-6">
-                      <p class="text-sm font-medium"> Options </p>
+                      <p
+                        class="text-sm font-medium text-slate-900 dark:text-white"
+                      >
+                        Options
+                      </p>
 
                       <div class="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-6">
                         <div class="lg:col-span-3">
@@ -355,7 +398,7 @@
                           />
                         </div>
 
-                        <template x-if="setting.type === 'select'">
+                        <template x-if="$store.settings.item.type === 'select'">
                           <div class="lg:col-span-3">
                             <label for="option_group">Group</label>
 
@@ -376,10 +419,10 @@
                             >
                               <li class="p-1">
                                 <strong
-                                  class="inline-flex items-center px-3 py-1 bg-gray-100 border border-gray-200 rounded-full"
+                                  class="inline-flex items-center px-3 py-1 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-full"
                                 >
                                   <span
-                                    class="text-xs font-medium"
+                                    class="text-xs font-medium text-slate-700 dark:text-slate-300"
                                     x-text="option.label"
                                   ></span>
 
@@ -399,8 +442,8 @@
 
                       <button
                         type="button"
-                        class="mt-4 bg-gray-200"
                         @click="$store.options.add"
+                        class="bg-violet-600 hover:scale-105 text-white transition mt-4"
                       >
                         Add Option
 
@@ -427,8 +470,8 @@
                   <div class="lg:col-span-6">
                     <button
                       type="button"
-                      class="bg-gray-200"
                       @click="$store.settings.add"
+                      class="bg-violet-600 hover:scale-105 text-white transition"
                     >
                       Add Setting
 
@@ -440,13 +483,15 @@
 
               <fieldset class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
                 <div>
-                  <legend class="font-medium">
+                  <legend class="font-medium text-slate-900 dark:text-white">
                     <span role="img" class="mr-1.5"> 🟧 </span>
 
                     Blocks
                   </legend>
 
-                  <p class="mt-1 text-sm max-w-[40ch]">
+                  <p
+                    class="mt-1 text-sm max-w-[40ch] text-slate-500 dark:text-slate-300"
+                  >
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Error tempora ea quo doloremque aperiam ad!
                   </p>
@@ -489,7 +534,7 @@
                     <button
                       type="button"
                       @click="$store.blocks.add"
-                      class="bg-gray-200"
+                      class="bg-violet-600 hover:scale-105 text-white transition"
                     >
                       Add Block
 
@@ -502,13 +547,15 @@
               <div x-data="{ show: false }">
                 <div class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
                   <div>
-                    <p class="font-medium">
+                    <p class="font-medium text-slate-900 dark:text-white">
                       <span role="img" class="mr-1.5"> 🦾 </span>
 
                       Enhanced Features
                     </p>
 
-                    <p class="mt-1 text-sm max-w-[40ch]">
+                    <p
+                      class="mt-1 text-sm max-w-[40ch] text-slate-500 dark:text-slate-300"
+                    >
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                       Voluptate, cupiditate?
                     </p>
@@ -516,16 +563,20 @@
 
                   <div class="space-y-8 lg:col-span-2">
                     <fieldset
-                      class="p-8 bg-gray-100 border border-gray-200 rounded-lg"
+                      class="p-8 bg-slate-100 border border-slate-200 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                     >
                       <div>
-                        <legend class="font-medium">
+                        <legend
+                          class="font-medium text-slate-900 dark:text-white"
+                        >
                           <span role="img" class="mr-1.5"> 🌀 </span>
 
                           Presets
                         </legend>
 
-                        <p class="mt-1 text-sm max-w-[40ch]">
+                        <p
+                          class="mt-1 text-sm max-w-[40ch] text-slate-500 dark:text-slate-300"
+                        >
                           Lorem ipsum dolor sit amet, consectetur adipisicing
                           elit. Voluptate, cupiditate?
                         </p>
@@ -546,8 +597,8 @@
                           <template x-if="$store.presets.items.length === 0">
                             <button
                               type="button"
-                              class="bg-gray-200"
                               @click="$store.presets.add"
+                              class="bg-violet-600 hover:scale-105 text-white transition"
                             >
                               Add Preset
 
@@ -558,8 +609,8 @@
                           <template x-if="$store.presets.items.length !== 0">
                             <button
                               type="button"
-                              class="bg-gray-200"
                               @click="$store.presets.remove"
+                              class="bg-violet-600 hover:scale-105 text-white transition"
                             >
                               Remove Preset
 
@@ -571,16 +622,20 @@
                     </fieldset>
 
                     <fieldset
-                      class="p-8 bg-gray-100 border border-gray-200 rounded-lg"
+                      class="p-8 bg-slate-100 border border-slate-200 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                     >
                       <div>
-                        <legend class="font-medium">
+                        <legend
+                          class="font-medium text-slate-900 dark:text-white"
+                        >
                           <span role="img" class="mr-1.5"> 🌎 </span>
 
                           Locales
                         </legend>
 
-                        <p class="mt-1 text-sm max-w-[40ch]">
+                        <p
+                          class="mt-1 text-sm max-w-[40ch] text-slate-500 dark:text-slate-300"
+                        >
                           Lorem ipsum dolor sit amet, consectetur adipisicing
                           elit. Voluptate, cupiditate?
                         </p>
@@ -606,11 +661,9 @@
                           >
                             <option>Please Select</option>
 
-                            <template
-                              x-if="$store.schema.settings && $store.schema.settings.length > 0"
-                            >
+                            <template x-if="$store.settings.items">
                               <template
-                                x-for="setting in $store.schema.settings"
+                                x-for="setting in $store.settings.items"
                               >
                                 <option
                                   :value="setting.id"
@@ -635,7 +688,7 @@
                           <button
                             type="button"
                             @click="$store.locales.add"
-                            class="bg-gray-200"
+                            class="bg-violet-600 hover:scale-105 text-white transition"
                           >
                             Add Translation
 
@@ -651,12 +704,16 @@
               <div class="grid grid-cols-1 gap-4 py-8 lg:grid-cols-3">
                 <div class="space-y-8">
                   <div>
-                    <p class="font-medium"> Settings </p>
+                    <p class="font-medium text-slate-900 dark:text-white">
+                      Settings
+                    </p>
 
                     <template
                       x-if="!$store.settings.items || $store.settings.items.length === 0"
                     >
-                      <p class="mt-1 text-sm text-gray-500">
+                      <p
+                        class="mt-1 text-sm text-slate-500 dark:text-slate-300"
+                      >
                         Nothing to see here...
                       </p>
                     </template>
@@ -667,19 +724,19 @@
                       >
                         <li
                           x-data="{ show: false }"
-                          class="p-2 bg-gray-100 border border-gray-200 rounded-lg"
+                          class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                         >
                           <div class="flex items-center justify-between">
                             <span
                               x-text="setting.label"
-                              class="text-sm font-medium"
+                              class="text-sm font-medium text-slate-700 dark:text-slate-200"
                             >
                             </span>
 
                             <div class="flex items-center space-x-1.5">
                               <button
                                 type="button"
-                                class="px-1.5 py-1 text-xs bg-blue-100 rounded"
+                                class="px-1.5 py-1 text-xs bg-blue-600 text-white hover:scale-105 transition rounded"
                                 @click="show = !show"
                               >
                                 Manage
@@ -687,7 +744,7 @@
 
                               <button
                                 type="button"
-                                class="px-1.5 py-1 text-xs bg-red-100 rounded"
+                                class="px-1.5 py-1 text-xs bg-red-600 text-white transition hover:scale-105 rounded"
                                 @click="$store.settings.remove(index)"
                               >
                                 Remove
@@ -697,9 +754,11 @@
 
                           <div x-show="show" class="mt-4 space-y-4">
                             <div
-                              class="p-2 border border-gray-200 rounded-lg bg-gray-50"
+                              class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                             >
-                              <label> Move </label>
+                              <label text-slate-500 dark:text-slate-300>
+                                Move
+                              </label>
 
                               <select
                                 @change="$store.settings.move(index, $event.target.value)"
@@ -716,9 +775,13 @@
 
                             <template x-if="$store.locales.any(setting)">
                               <div
-                                class="p-2 border border-gray-200 rounded-lg bg-gray-50"
+                                class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                               >
-                                <p class="text-sm font-medium"> Locales </p>
+                                <p
+                                  class="text-sm font-medium text-slate-900 dark:text-white"
+                                >
+                                  Locales
+                                </p>
 
                                 <ul class="mt-1.5 space-y-1.5">
                                   <template
@@ -729,7 +792,7 @@
                                     >
                                       <span
                                         x-text="value[setting.id]"
-                                        class="text-xs font-medium"
+                                        class="text-xs font-medium text-slate-500 dark:text-slate-300"
                                       ></span>
 
                                       <div
@@ -737,13 +800,13 @@
                                       >
                                         <span
                                           x-text="key"
-                                          class="px-1.5 py-1 text-xs font-medium rounded bg-blue-100"
+                                          class="px-1.5 py-1 text-xs font-medium rounded bg-blue-600 text-white hover:scale-105 transition"
                                         ></span>
 
                                         <button
                                           type="button"
                                           @click="$store.locales.remove(key, setting)"
-                                          class="px-1.5 py-1 text-xs bg-red-100 rounded"
+                                          class="px-1.5 py-1 text-xs bg-red-600 text-white hover:scale-105 transition rounded"
                                         >
                                           Remove
                                         </button>
@@ -760,12 +823,16 @@
                   </div>
 
                   <div>
-                    <p class="font-medium"> Blocks </p>
+                    <p class="font-medium text-slate-900 dark:text-white">
+                      Blocks
+                    </p>
 
                     <template
                       x-if="!$store.blocks.items || $store.blocks.items.length === 0"
                     >
-                      <p class="mt-1 text-sm text-gray-500">
+                      <p
+                        class="mt-1 text-sm text-slate-500 dark:text-slate-300"
+                      >
                         Nothing to see here...
                       </p>
                     </template>
@@ -773,19 +840,19 @@
                     <ul class="mt-4 space-y-4">
                       <template x-for="(block, index) in $store.blocks.items">
                         <li
-                          class="p-2 bg-gray-100 border border-gray-200 rounded-lg"
+                          class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                         >
                           <div class="flex items-center justify-between">
                             <span
                               x-text="block.name"
-                              class="text-sm font-medium"
+                              class="text-sm font-medium text-slate-700 dark:text-slate-200"
                             >
                             </span>
 
                             <button
                               type="button"
                               @click="$store.blocks.remove(index)"
-                              class="px-1.5 py-1 text-xs bg-red-100 rounded"
+                              class="px-1.5 py-1 text-xs bg-red-600 text-white hover:scale-105 transition rounded"
                             >
                               Remove
                             </button>
@@ -794,7 +861,9 @@
                           <template
                             x-if="block.settings && block.settings.length > 0"
                           >
-                            <ul class="mt-4 space-y-4 border-t border-gray-200">
+                            <ul
+                              class="p-4 mt-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
+                            >
                               <template
                                 x-for="(setting, index) in block.settings"
                               >
@@ -804,7 +873,7 @@
                                   >
                                     <span
                                       x-text="setting.label"
-                                      class="text-sm font-medium"
+                                      class="text-sm font-medium text-slate-700 dark:text-slate-200"
                                     >
                                     </span>
 
@@ -812,7 +881,7 @@
                                       <button
                                         type="button"
                                         @click="show = !show"
-                                        class="px-1.5 py-1 text-xs bg-blue-100 rounded"
+                                        class="px-1.5 py-1 text-xs bg-blue-600 text-white hover:scale-105 transition rounded"
                                       >
                                         Manage
                                       </button>
@@ -820,7 +889,7 @@
                                       <button
                                         type="button"
                                         @click="$store.settings.remove(index, block.name)"
-                                        class="px-1.5 py-1 text-xs bg-red-100 rounded"
+                                        class="px-1.5 py-1 text-xs bg-red-600 text-white hover:scale-105 transition rounded"
                                       >
                                         Remove
                                       </button>
@@ -829,7 +898,7 @@
 
                                   <div x-show="show" class="mt-4 space-y-4">
                                     <div
-                                      class="p-2 border border-gray-200 rounded-lg bg-gray-50"
+                                      class="p-4 border border-slate-200/50 bg-slate-100/50 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                                     >
                                       <label> Move </label>
 
@@ -837,9 +906,9 @@
                                         @change="$store.settings.move(index, $event.target.value, block.name)"
                                       >
                                         <option>Please Select</option>
-                                        <option value="settings"
-                                          >Settings</option
-                                        >
+                                        <option value="settings">
+                                          Settings
+                                        </option>
 
                                         <template
                                           x-for="item in $store.blocks.items"
@@ -861,7 +930,7 @@
                                       x-if="$store.locales.any(setting)"
                                     >
                                       <div
-                                        class="p-2 border border-gray-200 rounded-lg bg-gray-50"
+                                        class="p-2 bg-slate-100 border border-slate-200 dark:border-slate-800 dark:bg-slate-700 rounded-lg"
                                       >
                                         <p class="text-sm font-medium">
                                           Locales
@@ -876,7 +945,7 @@
                                             >
                                               <span
                                                 x-text="translation[setting.id]"
-                                                class="text-xs font-medium"
+                                                class="text-xs font-medium text-slate-500 dark:text-slate-300"
                                               ></span>
 
                                               <div
@@ -884,13 +953,13 @@
                                               >
                                                 <span
                                                   x-text="lang"
-                                                  class="px-1.5 py-1 text-xs font-medium rounded bg-blue-100"
+                                                  class="px-1.5 py-1 text-xs font-medium rounded bg-blue-600 text-white hover:scale-105 transition"
                                                 ></span>
 
                                                 <button
                                                   type="button"
                                                   @click="$store.locales.remove(lang, setting.id)"
-                                                  class="px-1.5 py-1 text-xs bg-red-100 rounded"
+                                                  class="px-1.5 py-1 text-xs bg-red-600 text-white hover:scale-105 transition rounded"
                                                 >
                                                   Remove
                                                 </button>
@@ -916,13 +985,13 @@
                     rows="15"
                     id="textarea"
                     x-text="JSON.stringify($store.schema.data, null, 2)"
-                    class="block font-mono bg-white border border-gray-200 rounded-lg"
+                    class="block font-mono h-full bg-slate-100 border border-slate-200 dark:border-slate-800/50 dark:bg-slate-900/50 rounded-lg"
                   ></textarea>
 
                   <button
                     type="button"
                     @click="$store.schema.copy"
-                    class="absolute bg-gray-200 bottom-3 right-3"
+                    class="bg-violet-600 hover:scale-105 text-white transition absolute bottom-4 right-4"
                   >
                     Copy to Clipboard
 
@@ -932,34 +1001,31 @@
               </div>
             </div>
 
-            <div class="flex justify-end mt-8">
-              <button type="submit" class="text-white bg-green-600">
-                Update Section
+            <button
+              type="submit"
+              class="bg-violet-600 hover:scale-105 text-white transition fixed right-4 bottom-4"
+            >
+              Save Form
 
-                <span role="img"> 👌 </span>
-              </button>
-            </div>
+              <span role="img"> 👌 </span>
+            </button>
           </form>
         </section>
       </div>
     </main>
 
     <script>
-      // Details
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('details', {
-          max_blocks: '',
-          tag: 'section',
-          name: 'Shopify Section',
-          class: 'shopify-section',
+          max_blocks: Alpine.$persist('').as('detailsMaxBlocks'),
+          tag: Alpine.$persist('section').as('detailsTag'),
+          name: Alpine.$persist('Shopify Section').as('detailsName'),
+          class: Alpine.$persist('shopify-section').as('detailsClass'),
         })
       })
     </script>
 
     <script>
-      // Settings
-
       const DEFAULT_SETTING = {
         id: 'message',
         type: 'text',
@@ -977,8 +1043,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('settings', {
-          items: [],
-          item: { ...DEFAULT_SETTING },
+          items: Alpine.$persist([]).as('settingItems'),
+          item: Alpine.$persist({ ...DEFAULT_SETTING }).as('settingItem'),
 
           add() {
             const options = Alpine.store('options').items
@@ -1074,8 +1140,6 @@
     </script>
 
     <script>
-      // Options
-
       const DEFAULT_OPTION = {
         value: '',
         label: '',
@@ -1084,8 +1148,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('options', {
-          items: [],
-          item: { ...DEFAULT_OPTION },
+          items: Alpine.$persist([]).as('optionsItems'),
+          item: Alpine.$persist({ ...DEFAULT_OPTION }).as('optionsItem'),
 
           add() {
             let newItem = self.item
@@ -1123,8 +1187,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('blocks', {
-          items: [],
-          item: { ...DEFAULT_BLOCK },
+          items: Alpine.$persist([]).as('blocksItems'),
+          item: Alpine.$persist({ ...DEFAULT_BLOCK }).as('blocksItem'),
 
           add() {
             const { type } = self.item
@@ -1159,22 +1223,16 @@
     </script>
 
     <script>
-      // Block
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('block', '')
       })
     </script>
 
     <script>
-      // Presets
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('presets', {
-          items: [],
-          item: {
-            name: '',
-          },
+          items: Alpine.$persist([]).as('presetsItems'),
+          item: Alpine.$persist({ name: '' }).as('presetsItem'),
 
           add() {
             const newItems = (self.items && [...self.items, self.item]) || [
@@ -1198,11 +1256,6 @@
     </script>
 
     <script>
-      // Locales
-
-      // This is by far the most complicated store in the whole project
-      // don't be put off, keep pushing through 💪
-
       const DEFAULT_TRANSLATION = {
         lang: '',
         value: '',
@@ -1211,8 +1264,8 @@
 
       document.addEventListener('alpine:init', () => {
         Alpine.store('locales', {
-          items: [],
-          item: { ...DEFAULT_TRANSLATION },
+          items: Alpine.$persist([]).as('localesItems'),
+          item: Alpine.$persist({ ...DEFAULT_TRANSLATION }).as('localesItem'),
 
           add() {
             const { lang, setting, value } = self.item
@@ -1260,8 +1313,6 @@
     </script>
 
     <script>
-      // Main
-
       document.addEventListener('alpine:init', () => {
         Alpine.store('schema', {
           data: {},
